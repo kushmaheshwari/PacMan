@@ -13,8 +13,8 @@ def DFS():
 		node = stack.pop()
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
-			print ("FOUND ENDING NODE. SEARCH COMPLETE")
-			exit()
+			print ("FOUND ENDING NODE DFS. SEARCH COMPLETE")
+			break
 		if node.visited == False:
 			node.visited = True
 			neighbors = node.neighbors
@@ -33,7 +33,8 @@ def BFS():
 		node = queue.get()
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
-			print ("FOUND ENDING NODE. SEARCH COMPLETE")
+			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
+			break
 		if node.visited == False:
 			node.visited = True
 			neighbors = node.neighbors
@@ -43,5 +44,5 @@ def BFS():
 
 
 if __name__ == "__main__":
-    # DFS()
+    DFS()
     BFS()
