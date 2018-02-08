@@ -15,12 +15,15 @@ def DFS():
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
 			print ("FOUND ENDING NODE DFS. SEARCH COMPLETE")
+			#updatePathNodes(node)
+			maze.printPath()
 			break
 		if node.visited == False:
 			node.visited = True
 			neighbors = node.neighbors
 			for n in neighbors:
 				if n.category != 0:
+					n.parent = node
 					stack.append(n)
 
 def BFS():
@@ -35,12 +38,15 @@ def BFS():
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
 			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
+			#updatePathNodes(node)
+			maze.printPath()
 			break
 		if node.visited == False:
 			node.visited = True
 			neighbors = node.neighbors
 			for n in neighbors:
 				if n.category != 0:
+					n.parent = node
 					queue.put(n)
 
 def AStar():
@@ -56,9 +62,9 @@ def AStar():
 	while len(queue) > 0:
 		newValue, node = heappop(queue)
 		node.visited = True
-		print(node)
 		if node.isDot == True:
 			print ("FOUND ENDING NODE AStar. SEARCH COMPLETE")
+			updatePathNodes(node)
 			maze.printPath()
 			break
 		newG = node.g + 10
@@ -69,8 +75,14 @@ def AStar():
 				n.h = 10 * (abs(n.x - endingNode.x) + abs(n.y - endingNode.y))
 				n.value = n.g + n.h
 				if n.category != 0:
+					n.parent = node
 					heappush(queue, (n.value, n))
 
+def updatePathNodes(Node):
+	node = Node
+	while node.parent is not None:
+		node.category = 2
+		node = node.parent
 
 if __name__ == "__main__":
     DFS()

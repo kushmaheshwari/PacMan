@@ -9,9 +9,9 @@ class Node:
 		self.value = 0
 		self.x = x
 		self.y = y
+		self.parent = None
 
 	def __lt__(self, other):
 		if (self.value < other.value):
 			return self
 		return other
-		

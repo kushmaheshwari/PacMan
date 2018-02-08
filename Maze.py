@@ -85,9 +85,12 @@ class Maze:
 	def printPath(self):
 		for i in range(self.rows):
 			for j in range(self.cols):
-				if self.node_array[i][j].visited:
-					print(1, end='')
+				if self.node_array[i][j].category == 2:
+					print(".", end='')
 				else:
-					print(0, end='')
+					if self.node_array[i][j].visited:
+						print(1, end='')
+					else:
+						print(0, end='')
 			print ()
 
