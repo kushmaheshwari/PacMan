@@ -45,18 +45,37 @@ def BFS():
 def Greedy():
     maze = Maze('mazes/mediumMaze.txt')
 
-    stack = []
+    queue = []
     startingNode = maze.startingNode
-    stack.append(startingNode)
-    while len(stack) > 0:
-        node = stack.pop()
+    endingNode = maze.endingNode
+    queue.put(startingNode)
+    
+    while len(queue) > 0:
+        node = queue.get()
         if node.isDot == True:
             print ("FOUND ENDING NODE GREEDY. SEARCH COMPLETE")
+            updatePathNodes(node)
+            maze.printPath()
             break
-        break
+        if node.visited == False:
+            node.visited = True
+            neighbors = node.neighbors
+            diff = {}
+            for n in neighbors:
+                n.g = abs(n.x - endingNode.x)
+                n.h = abs(n.y - endingNode.y)
+                n.value = n.g + n.h
+                if n.category != 0:
+                    n.parent = node
+                    diff[n.value] = n
+            while len(diff) > 0:
+                minKey = min(k for k, v in diff.iteritems())
+                queue.put(diff[minKey])
+                diff.pop(minKey)
 
 
 
 if __name__ == "__main__":
     DFS()
     BFS()
+    Greedy()
