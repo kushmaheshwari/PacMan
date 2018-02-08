@@ -44,6 +44,7 @@ def BFS():
 		neighbors = node.neighbors
 		for n in neighbors:
 			if n.category != 0 and n.visited == False:
+				n.visited = True
 				n.parent = node
 				queue.put(n)
 
@@ -83,6 +84,6 @@ def updatePathNodes(Node):
 		node = node.parent
 
 if __name__ == "__main__":
-    DFS()
+    # DFS()
     BFS()
-    AStar()
+    # AStar()
