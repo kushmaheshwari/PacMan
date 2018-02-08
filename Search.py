@@ -42,6 +42,20 @@ def BFS():
 				if n.category != 0:
 					queue.put(n)
 
+def Greedy():
+    maze = Maze('mazes/mediumMaze.txt')
+
+    stack = []
+    startingNode = maze.startingNode
+    stack.append(startingNode)
+    while len(stack) > 0:
+        node = stack.pop()
+        if node.isDot == True:
+            print ("FOUND ENDING NODE GREEDY. SEARCH COMPLETE")
+            break
+        break
+
+
 
 if __name__ == "__main__":
     DFS()
