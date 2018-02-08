@@ -8,11 +8,12 @@ class Maze:
 		self.rows = -1
 		self.fname = fname
 		self.startingNode = None
+		self.endingNode = None
 
 		self.readFile()
 		self.initializeMaze()
 		self.updateNeighbors()
-		self.printMaze()
+		
 
 
 	def readFile(self):
@@ -48,14 +49,15 @@ class Maze:
 			for j in range(self.cols):
 				node = None
 				if self.num_array[i][j] == 0:
-					node = Node(0,False,False)
+					node = Node(i, j, 0,False,False)
 				elif self.num_array[i][j] == 1:
-					node = Node(1,False,False)
+					node = Node(i, j, 1,False,False)
 				elif self.num_array[i][j] == 2:
-					node = Node (2,True,False)
+					node = Node (i, j, 2,True,False)
 					self.startingNode = node
 				elif self.num_array[i][j] == 3:
-					node = Node(3,False,True)
+					node = Node(i, j, 3,False,True)
+					self.endingNode = node
 				row.append(node)
 			self.node_array.append(row)
 
@@ -78,5 +80,14 @@ class Maze:
 		for i in range(self.rows):
 			for j in range(self.cols):
 				print(self.num_array[i][j], end='')
+			print ()
+
+	def printPath(self):
+		for i in range(self.rows):
+			for j in range(self.cols):
+				if self.node_array[i][j].visited:
+					print(1, end='')
+				else:
+					print(0, end='')
 			print ()
 
