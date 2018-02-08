@@ -12,19 +12,18 @@ def DFS():
 	stack.append(startingNode)
 	while len(stack) > 0:
 		node = stack.pop()
+		node.visited = True
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
 			print ("FOUND ENDING NODE DFS. SEARCH COMPLETE")
-			#updatePathNodes(node)
+			updatePathNodes(node)
 			maze.printPath()
 			break
-		if node.visited == False:
-			node.visited = True
-			neighbors = node.neighbors
-			for n in neighbors:
-				if n.category != 0:
-					n.parent = node
-					stack.append(n)
+		neighbors = node.neighbors
+		for n in neighbors:
+			if n.category != 0 and n.visited == False:
+				n.parent = node
+				stack.append(n)
 
 def BFS():
 	maze = Maze('mazes/mediumMaze.txt')
@@ -35,19 +34,18 @@ def BFS():
 	queue.put(startingNode)
 	while queue.qsize() > 0:
 		node = queue.get()
+		node.visited = True
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
 			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
-			#updatePathNodes(node)
+			updatePathNodes(node)
 			maze.printPath()
 			break
-		if node.visited == False:
-			node.visited = True
-			neighbors = node.neighbors
-			for n in neighbors:
-				if n.category != 0:
-					n.parent = node
-					queue.put(n)
+		neighbors = node.neighbors
+		for n in neighbors:
+			if n.category != 0 and n.visited == False:
+				n.parent = node
+				queue.put(n)
 
 def AStar():
 	maze = Maze('mazes/mediumMaze.txt')

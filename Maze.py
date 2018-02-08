@@ -87,10 +87,11 @@ class Maze:
 			for j in range(self.cols):
 				if self.node_array[i][j].category == 2:
 					print(".", end='')
+				elif self.node_array[i][j].category == 0:
+					print("X", end='')
+				elif self.node_array[i][j].visited:
+					print("1", end='')
 				else:
-					if self.node_array[i][j].visited:
-						print(1, end='')
-					else:
-						print(0, end='')
+					print(" ", end='')
 			print ()
 
