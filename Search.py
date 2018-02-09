@@ -83,31 +83,28 @@ def Greedy():
     queue = []
     startingNode = maze.startingNode
     endingNode = maze.endingNode
-    queue.put(startingNode)
+    startingNode.g = abs(startingNode.x - endingNode.x)
+    startingNode.h = abs(startingNode.y - endingNode.y)
+    startingNode.value = startingNode.g + startingNode.h
+    heappush(queue, (startingNode.value, startingNode))
     
     while len(queue) > 0:
-        node = queue.get()
+        newValue, node = heappop(queue)
+        node.visited = True
         if node.isDot == True:
             print ("FOUND ENDING NODE GREEDY. SEARCH COMPLETE")
             updatePathNodes(node)
             maze.printPath()
             break
-        if node.visited == False:
-            node.visited = True
-            neighbors = node.neighbors
-            diff = {}
-            for n in neighbors:
+        neighbors = node.neighbors
+        for n in neighbors:
+            if n.visited == False:
                 n.g = abs(n.x - endingNode.x)
                 n.h = abs(n.y - endingNode.y)
                 n.value = n.g + n.h
                 if n.category != 0:
                     n.parent = node
-                    diff[n.value] = n
-            while len(diff) > 0:
-                minKey = min(k for k, v in diff.iteritems())
-                queue.put(diff[minKey])
-                diff.pop(minKey)
-
+                    heappush(queue, (n.value, n))
 
 def updatePathNodes(Node):
 	node = Node
@@ -116,7 +113,7 @@ def updatePathNodes(Node):
 		node = node.parent
 
 if __name__ == "__main__":
-    # DFS()
+    DFS()
     BFS()
     Greedy()
-    # AStar()
+    AStar()
