@@ -83,15 +83,28 @@ class Maze:
 			print ()
 
 	def printPath(self):
+		pathCost = 0
+		nodesVisited = 0
+
 		for i in range(self.rows):
 			for j in range(self.cols):
 				if self.node_array[i][j].category == 2:
 					print(".", end='')
+					pathCost += 1
 				elif self.node_array[i][j].category == 0:
 					print("X", end='')
 				elif self.node_array[i][j].visited:
 					print("1", end='')
+					nodesVisited += 1
 				else:
 					print(" ", end='')
 			print ()
+
+		pathCost -= 2 #take out starting and ending node
+		nodesVisited += pathCost #adding the path plus any 1s to get all nodes visited. PathCost is just nodes in the path
+
+		print ('Path Cost: ' + str(pathCost))
+		print ('Nodes Visted: ' + str(nodesVisited))
+		print ('=======================================')
+
 

@@ -80,7 +80,7 @@ def AStar():
 def Greedy():
     maze = Maze('mazes/mediumMaze.txt')
 
-    queue = Queue(maxsize=0)
+    queue = []
     startingNode = maze.startingNode
     endingNode = maze.endingNode
     startingNode.g = abs(startingNode.x - endingNode.x)
