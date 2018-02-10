@@ -80,12 +80,12 @@ def AStar():
 def Greedy():
     maze = Maze('mazes/mediumMaze.txt')
 
-    queue = []
+    queue = Queue(maxsize=0)
     startingNode = maze.startingNode
     endingNode = maze.endingNode
     queue.put(startingNode)
     
-    while len(queue) > 0:
+    while queue.qsize() > 0:
         node = queue.get()
         if node.isDot == True:
             print ("FOUND ENDING NODE GREEDY. SEARCH COMPLETE")
@@ -104,7 +104,7 @@ def Greedy():
                     n.parent = node
                     diff[n.value] = n
             while len(diff) > 0:
-                minKey = min(k for k, v in diff.iteritems())
+                minKey = min(k for k, v in diff.items())
                 queue.put(diff[minKey])
                 diff.pop(minKey)
 
@@ -117,6 +117,6 @@ def updatePathNodes(Node):
 
 if __name__ == "__main__":
     # DFS()
-    BFS()
+    # BFS()
     Greedy()
     # AStar()
