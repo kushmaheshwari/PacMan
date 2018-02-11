@@ -26,7 +26,7 @@ def DFS():
 				stack.append(n)
 
 def BFS():
-	maze = Maze('mazes/mediumMaze.txt')
+	maze = Maze('mazes/tinySearch.txt')
 	
 	
 	queue = Queue(maxsize=0)
@@ -34,13 +34,19 @@ def BFS():
 	queue.put(startingNode)
 	while queue.qsize() > 0:
 		node = queue.get()
-		node.visited = True
 		if node.isDot == True:
 			#FOUND ENDING NODE. SEARCH COMPLETE
-			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
+			print (" ")
 			updatePathNodes(node)
 			maze.printPath()
+			maze.clearVisited()
+			queue.queue.clear()
+			node.isDot = False
+			maze.dots = maze.dots - 1
+		if maze.dots == 0:
+			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
 			break
+		node.visited = True
 		neighbors = node.neighbors
 		for n in neighbors:
 			if n.category != 0 and n.visited == False:
@@ -112,9 +118,10 @@ def updatePathNodes(Node):
 	while node.parent is not None:
 		node.category = 2
 		node = node.parent
+	node.category = 2
 
 if __name__ == "__main__":
-    DFS()
+    #DFS()
     BFS()
-    Greedy()
-    AStar()
+    #Greedy()
+    #AStar()
