@@ -9,7 +9,7 @@ class Maze:
 		self.fname = fname
 		self.startingNode = None
 		self.endingNode = None
-		self.dots = 0
+		self.dots = []
 
 		self.readFile()
 		self.initializeMaze()
@@ -35,7 +35,6 @@ class Maze:
 					row.append(2)
 				elif character == '.': #3 for dot
 					row.append(3)
-					self.dots = self.dots + 1
 			self.num_array.append(row)
 		
 
@@ -60,6 +59,7 @@ class Maze:
 				elif self.num_array[i][j] == 3:
 					node = Node(i, j, 3,False,True)
 					self.endingNode = node
+					self.dots.append(node)
 				row.append(node)
 			self.node_array.append(row)
 

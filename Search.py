@@ -42,8 +42,8 @@ def BFS():
 			maze.clearVisited()
 			queue.queue.clear()
 			node.isDot = False
-			maze.dots = maze.dots - 1
-		if maze.dots == 0:
+			maze.dots.remove(node)
+		if len(maze.dots) == 0:
 			print ("FOUND ENDING NODE BFS. SEARCH COMPLETE")
 			break
 		node.visited = True
@@ -119,6 +119,9 @@ def updatePathNodes(Node):
 		node.category = 2
 		node = node.parent
 	node.category = 2
+
+#def huersticAlgo(Node):
+
 
 if __name__ == "__main__":
     #DFS()
