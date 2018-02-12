@@ -108,6 +108,7 @@ class Maze:
 		print ('Path Cost: ' + str(pathCost))
 		print ('Nodes Visted: ' + str(nodesVisited))
 		print ('=======================================')
+		return pathCost,nodesVisited
 
 	def clearVisited(self):
 		for i in range(self.rows):
