@@ -134,7 +134,7 @@ def sortDots(dots, startingNode):
 
 
 def huersticAlgo():
-	maze = Maze('mazes/tinySearch.txt')
+	maze = Maze('mazes/ECMaze.txt')
 
 	queue = []
 	startingNode = maze.startingNode
@@ -199,7 +199,7 @@ def huersticAlgo():
 
 
 def huersticAlgo2():
-	maze = Maze('mazes/tinySearch.txt')
+	maze = Maze('mazes/mediumSearch.txt')
 
 	queue = []
 	startingNode = maze.startingNode
@@ -216,6 +216,18 @@ def huersticAlgo2():
 	nodesExpanded = 0
 	nodesVisitedTotal = 0
 	pathCostTotal = 0
+
+
+
+	vals = []
+	for i in range(1,10):
+		vals.append(str(i))
+	for i in range(97,123):
+		vals.append(chr(i))
+	for i in range(65,91):
+		vals.append(chr(i))
+
+	vals.reverse()
 	
 	while len(queue) > 0:
 		newValue, node = heappop(queue)
@@ -231,6 +243,7 @@ def huersticAlgo2():
 			maze.clearVisited()
 			queue = []
 			node.isDot = False
+			node.printed = vals.pop()
 
 
 
@@ -262,13 +275,81 @@ def huersticAlgo2():
 				if n.category != 0:
 					n.parent = node
 					heappush(queue, (n.value, n))
-					
+
+		dots.append(endingNode)
 		dots = sortDots(dots,node)
 		endingNode = dots.pop()
 		startingNode = node
-		startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
-		startingNode.value = startingNode.h
-		heappush(queue, (startingNode.value, startingNode))
+
+
+	maze.printSolDots()
+		# startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
+		# startingNode.value = startingNode.h
+		# heappush(queue, (startingNode.value, startingNode))
+
+
+	print ('Path Cost: ' + str(pathCostTotal))	
+	print ('Nodes Visited: ' + str(nodesVisitedTotal))	
+	print ('Nodes Expanded: ' + str(nodesExpanded))
+
+
+def ECBFS():
+	maze = Maze('mazes/ECMaze.txt')
+
+	queue = []
+	startingNode = maze.startingNode
+	dots = sortDots(maze.dots,startingNode)
+	endingNode = dots.pop()
+
+	print ('Ending Node: ' + str(endingNode.x) + ', ' + str(endingNode.y))
+
+
+	startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
+	startingNode.value = startingNode.h
+	heappush(queue, (startingNode.value, startingNode))
+
+	nodesExpanded = 0
+	nodesVisitedTotal = 0
+	pathCostTotal = 0
+	
+	while len(queue) > 0:
+		newValue, node = heappop(queue)
+		nodesExpanded += 1
+		node.visited = True
+		if node.isDot == True:
+			print ("FOUND A Dot.")
+			updatePathNodes(node)
+			pathCost,nodesVisited = maze.printPath()
+			pathCostTotal += pathCost
+			nodesVisitedTotal += nodesVisited
+			maze.clearVisited()
+			queue = []
+			node.isDot = False
+			if len(dots) == 0:
+				print ("FINISHED ALL DOTS.")
+				updatePathNodes(node)
+				pathCost,nodesVisited = maze.printPath()
+				pathCostTotal += pathCost
+				nodesVisitedTotal += nodesVisited
+				break
+			dots = sortDots(dots,node)
+			endingNode = dots.pop()
+			print ('Ending Node: ' + str(endingNode.x) + ', ' + str(endingNode.y))
+			startingNode = node
+			startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
+			startingNode.value = startingNode.h
+			heappush(queue, (startingNode.value, startingNode))
+
+		newG = node.g + 10
+		neighbors = node.neighbors
+		for n in neighbors:
+			if n.visited == False or newG < n.g:
+				n.g = newG
+				n.h = 10 * (abs(n.x - endingNode.x) + abs(n.y - endingNode.y))
+				n.value = n.g + n.h
+				if n.category != 0:
+					n.parent = node
+					heappush(queue, (n.value, n))
 
 
 	print ('Path Cost: ' + str(pathCostTotal))	
@@ -278,13 +359,10 @@ def huersticAlgo2():
 
 
 
-
-
-
-
 if __name__ == "__main__":
-    #DFS()
+    DFS()
     # BFS()
     #Greedy()
     #AStar()
-    huersticAlgo()
+    # huersticAlgo()
+    # huersticAlgo2()

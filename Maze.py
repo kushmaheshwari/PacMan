@@ -94,9 +94,9 @@ class Maze:
 					print(".", end='')
 					pathCost += 1
 				elif self.node_array[i][j].category == 0:
-					print("X", end='')
+					print("%", end='')
 				elif self.node_array[i][j].visited:
-					print("1", end='')
+					print(".", end='')
 					nodesVisited += 1
 				else:
 					print(" ", end='')
@@ -109,6 +109,22 @@ class Maze:
 		print ('Nodes Visted: ' + str(nodesVisited))
 		print ('=======================================')
 		return pathCost,nodesVisited
+
+	def printSolDots(self):
+		pathCost = 0
+		nodesVisited = 0
+
+		for i in range(self.rows):
+			for j in range(self.cols):
+				if self.node_array[i][j].printed != -1:
+					print(self.node_array[i][j].printed, end='')
+				elif self.node_array[i][j].category == 0:
+					print("%", end='')
+				else:
+					print(" ", end='')
+			print ()
+
+
 
 	def clearVisited(self):
 		for i in range(self.rows):

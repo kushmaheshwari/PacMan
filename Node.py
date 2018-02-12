@@ -10,6 +10,7 @@ class Node:
 		self.x = x
 		self.y = y
 		self.parent = None
+		self.printed = -1
 
 	def __lt__(self, other):
 		if (self.value < other.value):
