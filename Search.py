@@ -231,13 +231,19 @@ def huersticAlgo2():
 	
 	while len(queue) > 0:
 		newValue, node = heappop(queue)
+		while (node.visited == True):
+			newValue, node = heappop(queue)
 		nodesExpanded += 1
 		node.visited = True
+		print ('Current Node: ' + str(node.x) + ', ' + str(node.y) + ', ' + str(node.value))
 
 		if node.isDot == True:
 			print ("FOUND A Dot.")
 			updatePathNodes(node)
 			pathCost,nodesVisited = maze.printPath()
+			nodesExpanded -= 1
+			print ('Nodes Expanded: ' + str(nodesExpanded))
+
 			pathCostTotal += pathCost
 			nodesVisitedTotal += nodesVisited
 			maze.clearVisited()
@@ -263,7 +269,10 @@ def huersticAlgo2():
 			startingNode.value = startingNode.h
 			heappush(queue, (startingNode.value, startingNode))
 
-
+		dots.append(endingNode)
+		dots = sortDots(dots,node)
+		endingNode = dots.pop()
+		startingNode = node
 
 		newG = node.g + 10
 		neighbors = node.neighbors
@@ -276,10 +285,7 @@ def huersticAlgo2():
 					n.parent = node
 					heappush(queue, (n.value, n))
 
-		dots.append(endingNode)
-		dots = sortDots(dots,node)
-		endingNode = dots.pop()
-		startingNode = node
+		
 
 
 	maze.printSolDots()
@@ -314,6 +320,8 @@ def ECBFS():
 	
 	while len(queue) > 0:
 		newValue, node = heappop(queue)
+		if (node.visited == True):
+			newValue, node = heappop(queue)
 		nodesExpanded += 1
 		node.visited = True
 		if node.isDot == True:
@@ -323,6 +331,7 @@ def ECBFS():
 			pathCostTotal += pathCost
 			nodesVisitedTotal += nodesVisited
 			maze.clearVisited()
+			node.visited = True
 			queue = []
 			node.isDot = False
 			if len(dots) == 0:
@@ -353,16 +362,16 @@ def ECBFS():
 
 
 	print ('Path Cost: ' + str(pathCostTotal))	
-	print ('Nodes Visited: ' + str(nodesVisitedTotal))	
+	#print ('Nodes Visited: ' + str(nodesVisitedTotal))	
 	print ('Nodes Expanded: ' + str(nodesExpanded))
 
 
 
 
 if __name__ == "__main__":
-    DFS()
+    # DFS()
     # BFS()
     #Greedy()
     #AStar()
     # huersticAlgo()
-    # huersticAlgo2()
+    huersticAlgo2()
