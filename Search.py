@@ -125,25 +125,23 @@ def sortDots(dots, startingNode): #this sorts dots by distance to the node passe
 def Astar2():
 	maze = Maze('mazes/mediumSearch.txt')
 
-	queue = []
+	queue = []   #Queue holds all of the nodes
 	startingNode = maze.startingNode
-	dots = sortDots(maze.dots,startingNode)
-	endingNode = dots.pop()
+	dots = sortDots(maze.dots,startingNode)  #sorts the dot nodes based on manhattan distance to the starting node
+	endingNode = dots.pop()  #picks the closest node based on manhattan distance and defines it as ending node
 
 	print ('Ending Node: ' + str(endingNode.x) + ', ' + str(endingNode.y))
 
 
-	startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
+	startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y)) #h is manhattan distance to closest dot
 	startingNode.value = startingNode.h
-	heappush(queue, (startingNode.value, startingNode))
+	heappush(queue, (startingNode.value, startingNode)) 
 
 	nodesExpanded = 0
 	nodesVisitedTotal = 0
 	pathCostTotal = 0
 
-
-
-	vals = []
+	vals = []  #creates a list from 1 - 9, a - z, A - Z for labeling the dots in order that they have been visisted
 	for i in range(1,10):
 		vals.append(str(i))
 	for i in range(97,123):
@@ -152,32 +150,30 @@ def Astar2():
 		vals.append(chr(i))
 
 	vals.reverse()
-	
-	while len(queue) > 0:
+
+	while len(queue) > 0: #While there are nodes
 		newValue, node = heappop(queue)
-		while (node.visited == True):
+		while (node.visited == True):  #Handles  duplicate nodes in the queue
 			newValue, node = heappop(queue)
-		nodesExpanded += 1
+		nodesExpanded += 1 #Nodes expanded counter
 		node.visited = True
-		print ('Current Node: ' + str(node.x) + ', ' + str(node.y) + ', ' + str(node.value))
+		#print ('Current Node: ' + str(node.x) + ', ' + str(node.y) + ', ' + str(node.value))
 
 		if node.isDot == True:
 			print ("FOUND A Dot.")
-			updatePathNodes(node)
-			pathCost,nodesVisited = maze.printPath()
+			updatePathNodes(node)  #Used for printing and counting the correct path and debugging
+			pathCost,nodesVisited = maze.printPath() 
 			nodesExpanded -= 1
 			print ('Nodes Expanded: ' + str(nodesExpanded))
 
 			pathCostTotal += pathCost
 			nodesVisitedTotal += nodesVisited
-			maze.clearVisited()
-			queue = []
-			node.isDot = False
-			node.printed = vals.pop()
+			maze.clearVisited()  #Clear visited nodes
+			queue = [] #Clears queue
+			node.isDot = False #Sets the dot to false
+			node.printed = vals.pop() #orders dots
 
-
-
-			if len(dots) == 0:
+			if len(dots) == 0: #if dot list length is zero, break loop
 				print ("FINISHED ALL DOTS.")
 				updatePathNodes(node)
 				pathCost,nodesVisited = maze.printPath()
@@ -185,36 +181,32 @@ def Astar2():
 				nodesVisitedTotal += nodesVisited
 				break
 
-			dots = sortDots(dots,node)
+			dots = sortDots(dots,node) #Resort the remaining dots
 			endingNode = dots.pop()
 			print ('Ending Node: ' + str(endingNode.x) + ', ' + str(endingNode.y))
-			startingNode = node
-			startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y))
+			startingNode = node #reestablishes the starting node
+			startingNode.h = 10 * (abs(startingNode.x - endingNode.x) + abs(startingNode.y - endingNode.y)) #manhattan distance
 			startingNode.value = startingNode.h
-			heappush(queue, (startingNode.value, startingNode))
+			heappush(queue, (startingNode.value, startingNode)) 
 
-		dots.append(endingNode)
-		dots = sortDots(dots,node)
+		dots.append(endingNode) #adds the ending node so it can be sorted again
+		dots = sortDots(dots,node) #sorts dots again just incase there is another closer dot to the current node
 		endingNode = dots.pop()
 		startingNode = node
 
-		newG = node.g + 10
-		neighbors = node.neighbors
+		newG = node.g + 10 #g is the calculated steps from the beginning. every new node adds 10 more.
+		neighbors = node.neighbors #finds neighbors
 		for n in neighbors:
-			if n.visited == False or newG < n.g:
-				n.g = newG
-				n.h = 10 * (abs(n.x - endingNode.x) + abs(n.y - endingNode.y))
-				n.value = n.g + n.h
-				if n.category != 0:
+			if n.visited == False or newG < n.g: #if neighbors have not been visited or there is a shorter path to the neighbor
+				n.g = newG #set new g
+				n.h = 10 * (abs(n.x - endingNode.x) + abs(n.y - endingNode.y)) #set manhattan distance to closest dot
+				n.value = n.g + n.h #adds g and h
+				if n.category != 0: # if not a wall
 					n.parent = node
-					heappush(queue, (n.value, n))
+					heappush(queue, (n.value, n)) #heap automatically sorts the queue based on the value
 
 		
-
-
-	maze.printSolDots()
-
-
+	maze.printSolDots() #print maze with ordered dots
 
 	print ('Path Cost: ' + str(pathCostTotal))	
 	print ('Nodes Visited: ' + str(nodesVisitedTotal))	
@@ -226,8 +218,8 @@ def Astar2():
 
 
 if __name__ == "__main__":
-    # DFS()
+    DFS()
     BFS()
-    #Greedy()
-    #AStar()
-    # Astar2()
+    Greedy()
+    AStar()
+    Astar2()
