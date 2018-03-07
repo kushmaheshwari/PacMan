@@ -17,7 +17,7 @@ class Maze:
 		
 
 
-	def readFile(self):
+	def readFile(self): #initializing a num_array 
 		self.num_array = []
 		with open(self.fname) as f:
 		    	content = f.readlines()
@@ -42,7 +42,7 @@ class Maze:
 		self.rows = len(content)
 		self.cols = len(content[0]) 
 
-	def initializeMaze(self):
+	def initializeMaze(self): #initializing the maze so that its a node double array 
 		self.node_array = []	
 
 		for i in range(self.rows):
@@ -64,7 +64,7 @@ class Maze:
 			self.node_array.append(row)
 
 
-	def updateNeighbors(self):
+	def updateNeighbors(self): #updates the neighbors of every node
 		for i in range(self.rows):
 			for j in range(self.cols):
 				neighbors = []
@@ -78,13 +78,13 @@ class Maze:
 					neighbors.append(self.node_array[i][j+1])			
 				self.node_array[i][j].neighbors = neighbors 
 
-	def printMaze(self):
+	def printMaze(self): #print the Maze using the num array
 		for i in range(self.rows):
 			for j in range(self.cols):
 				print(self.num_array[i][j], end='')
 			print ()
 
-	def printPath(self):
+	def printPath(self): #print the path using the new categories. Also it allows us to calculate cost of path and nodes
 		pathCost = 0
 		nodesVisited = 0
 
@@ -110,7 +110,7 @@ class Maze:
 		print ('=======================================')
 		return pathCost,nodesVisited
 
-	def printSolDots(self):
+	def printSolDots(self): 
 		pathCost = 0
 		nodesVisited = 0
 
@@ -125,8 +125,8 @@ class Maze:
 			print ()
 
 
-
-	def clearVisited(self):
+ 
+	def clearVisited(self): #clears all the visited for the whole array
 		for i in range(self.rows):
 			for j in range(self.cols):
 				self.node_array[i][j].visited = False
