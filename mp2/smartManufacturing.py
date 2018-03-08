@@ -4,6 +4,9 @@ class smartManufacturing:
 	def __init__(self):
 		self.widgets = None
 
+		self.letters = []
+		self.totalLetters = 0
+		
 		self.initialize()
 
 	def initialize(self):
@@ -13,38 +16,15 @@ class smartManufacturing:
 		widget4 = ["D","A","D","B","D"]
 		widget5 = ["B","E","C","B","D"]
 
-		queue1 = Queue(maxsize=0)
-		for item in widget1:
-			queue1.put(item)
-
-		queue2 = Queue(maxsize=0)
-		for item in widget2:
-			queue2.put(item)
-
-		queue3 = Queue(maxsize=0)
-		for item in widget3:
-			queue3.put(item)
-
-		queue4 = Queue(maxsize=0)
-		for item in widget4:
-			queue4.put(item)
-
-		queue5 = Queue(maxsize=0)
-		for item in widget5:
-			queue5.put(item)	
-
 		self.widgets = []
-		self.widgets.append(queue1)
-		self.widgets.append(queue2)
-		self.widgets.append(queue3)
-		self.widgets.append(queue4)
-		self.widgets.append(queue5)
+		self.widgets.append(widget1)
+		self.widgets.append(widget2)
+		self.widgets.append(widget3)
+		self.widgets.append(widget4)
+		self.widgets.append(widget5)
 
-
-
-
-
-
-
-
-
+		self.letters.append(0)
+		self.letters.append(0)
+		self.letters.append(0)
+		self.letters.append(0)
+		self.letters.append(0)
