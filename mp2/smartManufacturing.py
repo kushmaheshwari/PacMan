@@ -1,44 +1,49 @@
-from queue import *
-
 class smartManufacturing:
-	def __init__(self):
-		self.widgets = None
+    def __init__(self):
+        self.widgets = None
+        self.initialize()
 
-		self.initialize()
+    def initialize(self):
+        widget1 = ["A","E","D","C","A"]
+        widget2 = ["B","E","A","C","D"]
+        widget3 = ["B","A","B","C","E"]
+        widget4 = ["D","A","D","B","D"]
+        widget5 = ["B","E","C","B","D"]
 
-	def initialize(self):
-		widget1 = ["A","E","D","C","A"]
-		widget2 = ["B","E","A","C","D"]
-		widget3 = ["B","A","B","C","E"]
-		widget4 = ["D","A","D","B","D"]
-		widget5 = ["B","E","C","B","D"]
+        stack1 = []
+        while len(widget1) > 0:
+            curr = widget1.pop()
+            stack1.append(curr)
 
-		queue1 = Queue(maxsize=0)
-		for item in widget1:
-			queue1.put(item)
+#for item in widget1:
+#stack1.put(item)
 
-		queue2 = Queue(maxsize=0)
-		for item in widget2:
-			queue2.put(item)
+        stack2 = []
+        while len(widget2) > 0:
+            curr = widget2.pop()
+            stack2.append(curr)
 
-		queue3 = Queue(maxsize=0)
-		for item in widget3:
-			queue3.put(item)
+        stack3 = []
+        while len(widget3) > 0:
+            curr = widget3.pop()
+            stack3.append(curr)
 
-		queue4 = Queue(maxsize=0)
-		for item in widget4:
-			queue4.put(item)
+        stack4 = []
+        while len(widget4) > 0:
+            curr = widget4.pop()
+            stack4.append(curr)
 
-		queue5 = Queue(maxsize=0)
-		for item in widget5:
-			queue5.put(item)	
-
-		self.widgets = []
-		self.widgets.append(queue1)
-		self.widgets.append(queue2)
-		self.widgets.append(queue3)
-		self.widgets.append(queue4)
-		self.widgets.append(queue5)
+        stack5 = []
+        while len(widget5) > 0:
+            curr = widget5.pop()
+            stack5.append(curr)
+        
+        self.widgets = []
+        self.widgets.append(stack1)
+        self.widgets.append(stack2)
+        self.widgets.append(stack3)
+        self.widgets.append(stack4)
+        self.widgets.append(stack5)
 
 
 
