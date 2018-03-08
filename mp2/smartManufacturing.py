@@ -1,6 +1,5 @@
-from queue import *
-
 class smartManufacturing:
+
 	def __init__(self):
 		self.widgets = None
 
