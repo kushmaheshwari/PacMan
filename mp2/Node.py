@@ -6,6 +6,7 @@ class Node:
 		self.value = value
 
 	def __lt__(self, other):
-		if (self.value < other.value):
-			return self
+		if (self.value != None and other.value != None):
+			if (self.value < other.value):
+				return self
 		return other
