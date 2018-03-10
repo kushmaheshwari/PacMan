@@ -80,6 +80,5 @@ class smartManufacturing:
 					emptyarray.append(prev)
 				j = index
 			emptyarray.reverse()
-			print (emptyarray)
 			self.heuristics.append(emptyarray)
 

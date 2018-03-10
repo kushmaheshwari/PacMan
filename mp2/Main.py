@@ -2,6 +2,7 @@ from smartManufacturing import *
 from queue import *
 from Node import *
 from heapq import *
+from Gomoku import *
 
 def partOne():
 	data = smartManufacturing()
@@ -15,12 +16,11 @@ def partOne():
 
 	while (len(queue) > 0):
 		value, node = heappop(queue)
-		print(node.letter)
 		phrase = node.phrase
 		phrase += node.letter
-		print(phrase)
+		
 		countLetters(data)
-		printLetterCount(data)
+		#printLetterCount(data)
 
 		data = smartManufacturing()
 
@@ -28,7 +28,8 @@ def partOne():
 		countLetters(data)
 		updateQueue(data, queue, phrase)
 		printLetterCount(data)
-
+		print(phrase, node.value, maxWidgetLength(data), maxLetter(data), len(phrase))
+		
 		if (data.totalLetters == 0):
 			print ("Finished = " + phrase + ', Value = ' + str(node.value))
 			#print("Length = " + len(phrase))
@@ -60,7 +61,7 @@ def printLetterCount(data):
 	print('total = ' + str(data.totalLetters))
 
 def maxWidgetLength(data):
-	return max(len(data.widgets[0]), len(data.widgets[1]), len(data.widgets[2]), len(data.widgets[3]), len(data.widgets[4]))
+	return min(len(data.widgets[0]), len(data.widgets[1]), len(data.widgets[2]), len(data.widgets[3]), len(data.widgets[4]))
 
 def maxLetter(data):
 	#return max(data.letters[0], data.letters[1], data.letters[2], data.letters[3], data.letters[4])
@@ -77,7 +78,6 @@ def updateQueue(data, queue, phrase):
 	for index, item in enumerate(data.letters):
 		if (item != 0):
 			value = maxWidgetLength(data) + maxLetter(data) - item + len(phrase)
-
 			if (index == 0):
 				#print('amount = ' + str(item) + ', value = ' + str(value) + ', letter = A')
 				node = Node('A', value, 5, phrase)
@@ -133,9 +133,7 @@ def partTwo():
 def updateQueue2(data, queue, phrase):
 	for index, item in enumerate(data.letters):
 		if item != 0:
-			if item == 1:
-				for letter in data.widgets
-			else:
+			
 
 			value = calcValue(data, index)
 			if index == 0:
@@ -160,3 +158,4 @@ if __name__ == "__main__":
     data = smartManufacturing()
     partOne()
     #partTwo()
+    board = Board()
