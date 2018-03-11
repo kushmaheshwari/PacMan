@@ -3,6 +3,7 @@ from queue import *
 from Node import *
 from heapq import *
 from Gomoku import *
+from blueAgent import *
 
 def partOne():
 	data = smartManufacturing()
@@ -156,6 +157,8 @@ def updateQueue2(data, queue, phrase):
 
 if __name__ == "__main__":
     data = smartManufacturing()
-    partOne()
+    #partOne()
     #partTwo()
     board = Board()
+    blocks = blueWinningBlock(board)
+    updateWinningBlocks_blue(blocks)
