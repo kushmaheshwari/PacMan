@@ -7,6 +7,7 @@ class smartManufacturing:
 		self.heuristics = None
 
 		self.letters = []
+		self.maxHeuristic = []
 		self.totalLetters = 0
 		self.totalDistance = 0
 
@@ -33,6 +34,12 @@ class smartManufacturing:
 		self.letters.append(0)
 		self.letters.append(0)
 		self.letters.append(0)
+
+		self.maxHeuristic.append(0)
+		self.maxHeuristic.append(0)
+		self.maxHeuristic.append(0)
+		self.maxHeuristic.append(0)
+		self.maxHeuristic.append(0)
 
 		fromA = [0, 1064, 673, 1401, 277]
 		fromB = [1064, 0, 958, 1934, 337]
