@@ -7,6 +7,7 @@ class winBlocks:
 		self.reds = 0
 		self.state = 0  #0 empty, 1 both, 2 blue, 3 red
 		self.orientation = orientation
+		self.openEnded = 0
 
 		self.updateBlock()
 
@@ -24,3 +25,13 @@ class winBlocks:
 			self.state = 2
 		elif(self.reds > 0):
 			self.state = 3
+
+		counter = 0
+		for item in self.nodes:
+			if (counter == 0 or counter == 4) and (item.isBlue == True or item.isRed == True):
+				self.openEnded = 0
+				break
+			elif(counter == 4):
+				self.openEnded = 1
+			counter += 1
+

@@ -213,10 +213,11 @@ if __name__ == "__main__":
 
 	board = Board()
 	value = 0
+	counter = 0
 	blueWinningBlock(board)
 	#board = reflexAgent(board)
 	#board.printNodes()
-	while (board.victory != True):
+	while (board.victory != True and counter < 25):
 		board = reflexAgent(board)
 		board.printNodes()
 		weight = weighBoard(board)
@@ -225,4 +226,5 @@ if __name__ == "__main__":
 		board.printNodes()
 		weight = weighBoard(board)
 		print(weight)
+		counter += 1
 		

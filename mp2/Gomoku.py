@@ -12,7 +12,7 @@ class Board:
 		self.blocks = []
 		self.myDict = defaultdict(list)
 
-		self.victory == False
+		self.victory = False
 
 		self.initialize()
 		self.printNodes()
@@ -20,16 +20,7 @@ class Board:
 
 	def initialize(self):
 		self.int_array = []
-		#i = 0
-		#while i < 7:
-		#	emptyarray = []
-		#	j = 0
-		#	while j < 7:
-		#		emptyarray.append(0) #0 for empty intersection
-		#		j += 1
-		#	self.int_array.append(emptyarray)
-		#	i += 1
-
+	
 		emptyarray1 = [0, 0, 0, 0, 0, 0, 0]
 		emptyarray2 = [0, 0, 0, 0, 0, 0, 0]
 		emptyarray3 = [0, 0, 0, 0, 0, 0, 0]
@@ -66,11 +57,11 @@ class Board:
 		for i in range(self.rows):
 			for j in range(self.cols):
 				if (self.node_array[i][j].isBlue):
-					self.int_array[i][j] = 1
+					self.int_array[6-i][j] = '1'
 				elif (self.node_array[i][j].isRed):
-					self.int_array[i][j] = 2
+					self.int_array[6-i][j] = '2'
 				else:
-					self.int_array[i][j] = "."
+					self.int_array[6-i][j] = '.'
 		for i in range(self.rows):
 			print(self.int_array[i])
 		print('----------------------------------------------------')

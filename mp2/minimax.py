@@ -45,24 +45,28 @@ def weighBoard(board):
 
 	for item in board.blocks:
 		if (item.state == 2 and item.blues == 5):
-			weight -= 150
+			weight -= 200
 		elif (item.state == 2 and item.blues == 4):
-			weight -= 49
+			weight -= 51
+		elif (item.state == 2 and item.blues == 3 and item.openEnded == 1):
+			weight -= 51
 		elif (item.state == 2 and item.blues == 3):
-			weight -= 24
+			weight -= 26
 		elif (item.state == 2 and item.blues == 2):
-			weight -= 11
+			weight -= 13
 		#elif (item.state == 2 and item.blues == 1):
 		#	stones[4].append(item)
 		#elif(item.state == 3 and item.reds == 1):
 		#	stones[5].append(item)
 		elif(item.state == 3 and item.reds == 2):
-			weight += 11
+			weight += 13
 		elif(item.state == 3 and item.reds == 3):
-			weight +=24
+			weight +=26
+		elif (item.state == 3 and item.blues == 3 and item.openEnded == 1):
+			weight += 51
 		elif(item.state == 3 and item.reds == 4):
-			weight += 49
+			weight += 51
 		elif(item.state == 3 and item.reds == 5):	
-			weight += 400	
+			weight += 200	
 
 	return weight

@@ -59,7 +59,7 @@ def blueWinningBlock(board):
 	for i in range(board.rows):
 		for j in range(board.cols):
 			currBlock = []
-			if i-4 > 0 and j+4 < board.cols:
+			if i-4 >= 0 and j+4 < board.cols:
 				idx = 0
 				while idx < 5:
 					currBlock.append(board.node_array[i-idx][j+idx])
@@ -75,6 +75,7 @@ def blueWinningBlock(board):
 				board.blocks.append(winBlock)
 
 def reflexAgent(board):
+	
 	stones = []
 	stones.append([])
 	stones.append([])
@@ -91,7 +92,7 @@ def reflexAgent(board):
 		elif(item.state == 3 and item.reds == 4):
 			print("four")
 			stones[1].append(item)
-		elif(item.state == 3 and item.reds == 3):
+		elif(item.state == 3 and item.reds == 3 and item.openEnded == 1):
 			print("three")
 			stones[2].append(item)
 		elif (item.state == 2 and item.blues == 3):
