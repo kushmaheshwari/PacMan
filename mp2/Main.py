@@ -4,6 +4,7 @@ from Node import *
 from heapq import *
 from Gomoku import *
 from blueAgent import *
+from minimax import *
 
 def partOne():
 	data = smartManufacturing()
@@ -207,9 +208,21 @@ def countLetters2(data):
 	data.totalLetters = data.letters[0] + data.letters[1] + data.letters[2] + data.letters[3] + data.letters[4]
 
 if __name__ == "__main__":
-    data = smartManufacturing()
-    #partOne()
-    #partTwo()
-    board = Board()
-    blocks = blueWinningBlock(board)
-    updateWinningBlocks_blue(blocks)
+	#partOne()
+	#partTwo()
+
+	board = Board()
+	value = 0
+	blueWinningBlock(board)
+	#board = reflexAgent(board)
+	#board.printNodes()
+	while (board.victory != True):
+		board = reflexAgent(board)
+		board.printNodes()
+		weight = weighBoard(board)
+		print(weight)
+		board, value = searchTree(board, 0)
+		board.printNodes()
+		weight = weighBoard(board)
+		print(weight)
+		

@@ -1,4 +1,6 @@
 from Node2 import *
+from winBlocks import *
+from collections import defaultdict
 
 class Board:
 	def __init__(self):
@@ -7,21 +9,42 @@ class Board:
 		self.rows = -1
 		self.cols = -1
 
+		self.blocks = []
+		self.myDict = defaultdict(list)
+
+		self.victory == False
+
 		self.initialize()
+		self.printNodes()
 		self.setNeighbors()
 
 	def initialize(self):
 		self.int_array = []
-		i = 0
-		while i < 7:
-			emptyarray = []
-			j = 0
-			while j < 7:
-				emptyarray.append(0) #0 for empty intersection
-				j += 1
-			self.int_array.append(emptyarray)
-			i += 1
-		print(self.int_array)
+		#i = 0
+		#while i < 7:
+		#	emptyarray = []
+		#	j = 0
+		#	while j < 7:
+		#		emptyarray.append(0) #0 for empty intersection
+		#		j += 1
+		#	self.int_array.append(emptyarray)
+		#	i += 1
+
+		emptyarray1 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray2 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray3 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray4 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray5 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray6 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray7 = [0, 0, 0, 0, 0, 0, 0]
+
+		self.int_array.append(emptyarray7)
+		self.int_array.append(emptyarray6)
+		self.int_array.append(emptyarray5)
+		self.int_array.append(emptyarray4)
+		self.int_array.append(emptyarray3)
+		self.int_array.append(emptyarray2)
+		self.int_array.append(emptyarray1)
 
 		self.rows = len(self.int_array)
 		self.cols = len(self.int_array[0])
@@ -30,9 +53,27 @@ class Board:
 		for i in range(self.rows):
 			row = []	
 			for j in range(self.cols):
-				node = Node2(i, j, False, False)
+				if (self.int_array[i][j] == 0):
+					node = Node2(i, j, False, False)
+				elif (self.int_array[i][j] == 1):
+					node = Node2(i, j, True, False)
+				elif (self.int_array[i][j] == 2):
+					node = Node2(i, j, False, True)	
 				row.append(node)
 			self.node_array.append(row)
+
+	def printNodes(self):
+		for i in range(self.rows):
+			for j in range(self.cols):
+				if (self.node_array[i][j].isBlue):
+					self.int_array[i][j] = 1
+				elif (self.node_array[i][j].isRed):
+					self.int_array[i][j] = 2
+				else:
+					self.int_array[i][j] = "."
+		for i in range(self.rows):
+			print(self.int_array[i])
+		print('----------------------------------------------------')
 
 	def setNeighbors(self):
 		for i in range(self.rows):
@@ -56,4 +97,17 @@ class Board:
 					neighbors.append(self.node_array[i+1][j+1])			
 				self.node_array[i][j].neighbors = neighbors
 
+	def updateBlocks(self, i, j, color):
+		string = str(i) + ", " + str(j)
+		changeBlocks = self.myDict[string]
+		node = self.node_array[i][j]
+		if color == 1:
+			node.isBlue = True
+		elif color == 2:
+			node.isRed = True
+		else:
+			node.isBlue = False
+			node.isRed = False
+		for item in changeBlocks:
+			item.updateBlock()
 
