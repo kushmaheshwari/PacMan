@@ -6,6 +6,7 @@ class Node2:
 		self.isRed = isRed
 		self.neighbors = []
 		self.neighbor = self.isNeighbor() #0 is no neighbors, 1 is both red and blue neighbors, 2 is blue, 3 is red
+		self.letter = ''
 
 	def isNeighbor(self):
 		i = 0

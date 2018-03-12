@@ -114,7 +114,7 @@ def reflexAgent(board):
 	i = 6 
 	j = 6
 	if spots == []:
-		board.updateBlocks(4, 4, 1)
+		board.updateBlocks2(4, 4, 1)
 		#board.int_array[4][4] = 1
 		return board
 	for item in spots:
@@ -124,6 +124,6 @@ def reflexAgent(board):
 		if item.y < j:
 			j = item.y
 			i = item.x
-	board.updateBlocks(i, j, 1)
+	board.updateBlocks2(i, j, 1)
 	#board.int_array[i][j] = 1
 	return board

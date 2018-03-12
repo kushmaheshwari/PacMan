@@ -37,7 +37,7 @@ def searchTree(board, depth):
 
 	#print(depth, x)
 	if depth == 0 and x != 8:
-		newboard.updateBlocks(x, y, 2)
+		newboard.updateBlocks2(x, y, 2)
 	return newboard, value
 
 def weighBoard(board):

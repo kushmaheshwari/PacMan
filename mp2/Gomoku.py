@@ -14,6 +14,17 @@ class Board:
 
 		self.victory = False
 
+		self.blueidx = 0
+		self.redidx = 0
+		self.blueLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+		self.redLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+		i = 0
+		while i < 30:
+			self.blueLetters.append('.')
+			self.redLetters.append('.')
+			i += 1
+
+
 		self.initialize()
 		self.printNodes()
 		self.setNeighbors()
@@ -57,9 +68,9 @@ class Board:
 		for i in range(self.rows):
 			for j in range(self.cols):
 				if (self.node_array[i][j].isBlue):
-					self.int_array[6-i][j] = '1'
+					self.int_array[6-i][j] = self.node_array[i][j].letter
 				elif (self.node_array[i][j].isRed):
-					self.int_array[6-i][j] = '2'
+					self.int_array[6-i][j] = self.node_array[i][j].letter
 				else:
 					self.int_array[6-i][j] = '.'
 		for i in range(self.rows):
@@ -92,10 +103,30 @@ class Board:
 		string = str(i) + ", " + str(j)
 		changeBlocks = self.myDict[string]
 		node = self.node_array[i][j]
+		
 		if color == 1:
 			node.isBlue = True
 		elif color == 2:
 			node.isRed = True
+		else:
+			node.isBlue = False
+			node.isRed = False
+		for item in changeBlocks:
+			item.updateBlock()
+
+	def updateBlocks2(self, i, j, color):
+		string = str(i) + ", " + str(j)
+		changeBlocks = self.myDict[string]
+		node = self.node_array[i][j]
+		
+		if color == 1:
+			node.isBlue = True
+			node.letter = self.blueLetters[self.blueidx]
+			self.blueidx += 1
+		elif color == 2:
+			node.isRed = True
+			node.letter = self.redLetters[self.redidx]
+			self.redidx += 1
 		else:
 			node.isBlue = False
 			node.isRed = False
