@@ -43,7 +43,7 @@ def searchTree(board, depth, counter):
 		newboard.updateBlocks2(x, y, 2)
 	return newboard, value, counter
 
-def searchTree2(board, depth, alpha, beta, counter):
+def searchTreeAlpha(board, depth, alpha, beta, counter):
 	counter += 1
 	if depth == 3:
 		weight = weighBoard2(board)
@@ -64,7 +64,7 @@ def searchTree2(board, depth, alpha, beta, counter):
 			if (board.node_array[i][j].isBlue == False and board.node_array[i][j].isRed == False):
 				if depth == 1 or depth == 3:
 					newboard.updateBlocks(i, j, 2)
-					updatedboard, weight, newCounter = searchTree2(newboard, depth + 1, -2000, beta, counter)
+					updatedboard, weight, newCounter = searchTreeAlpha(newboard, depth + 1, -2000, beta, counter)
 					counter = newCounter
 					newboard.updateBlocks(i, j, 0)
 					if (weight < beta):
@@ -75,7 +75,7 @@ def searchTree2(board, depth, alpha, beta, counter):
 						y = j
 				else:
 					newboard.updateBlocks(i, j, 1)
-					updatedboard, weight, newCounter = searchTree2(newboard, depth + 1, alpha, 2000, counter)
+					updatedboard, weight, newCounter = searchTreeAlpha(newboard, depth + 1, alpha, 2000, counter)
 					counter = newCounter
 					newboard.updateBlocks(i, j, 0)
 					#print (depth, value, weight, x, y)

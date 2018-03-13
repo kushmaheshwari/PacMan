@@ -83,6 +83,7 @@ def reflexAgentBlue(board):
 	stones.append([])
 	stones.append([])
 	stones.append([])
+	stones.append([])
 	spots = []
 	for item in board.blocks:
 		if (item.reds == 5 or item.blues == 5):
@@ -99,6 +100,8 @@ def reflexAgentBlue(board):
 			stones[4].append(item)
 		elif (item.state == 2 and item.blues == 1):
 			stones[5].append(item)
+		else:
+			stones[6].append(item)
 	for m, item in enumerate(stones):
 		if(item != []):
 			for index in item:
@@ -111,8 +114,9 @@ def reflexAgentBlue(board):
 			break
 	i = 6 
 	j = 6
+	print (spots)
 	if spots == []:
-		board.updateBlocks2(3, 3, 1)
+		board.updateBlocks2(5, 5, 1)
 		#board.int_array[4][4] = 1
 		return board
 	for item in spots:
@@ -129,6 +133,7 @@ def reflexAgentBlue(board):
 def reflexAgentRed(board):
 	
 	stones = []
+	stones.append([])
 	stones.append([])
 	stones.append([])
 	stones.append([])
@@ -164,7 +169,7 @@ def reflexAgentRed(board):
 	i = 6 
 	j = 6
 	if spots == []:
-		board.updateBlocks2(4, 4, 2)
+		board.updateBlocks2(1, 1, 2)
 		#board.int_array[4][4] = 1
 		return board
 	for item in spots:
