@@ -1,7 +1,52 @@
+import random
+
+def generate(n):
+	widget1 = []
+	widget2 = []
+	widget3 = []
+	widget4 = []
+	widget5 = []
+	let = ["A", "B", "C", "D", "E"]
+
+	i = n
+	while i > 0:
+		widget1.append(random.choice(let))
+		i = i - 1
+
+	i = n
+	while i > 0:
+		widget2.append(random.choice(let))
+		i = i - 1
+
+	i = n
+	while i > 0:
+		widget3.append(random.choice(let))
+		i = i - 1
+
+	i = n
+	while i > 0:
+		widget4.append(random.choice(let))
+		i = i - 1
+
+	i = n
+	while i > 0:
+		widget5.append(random.choice(let))
+		i = i - 1
+
+	widgets = []
+	widgets.append(widget1)	
+	widgets.append(widget2)
+	widgets.append(widget3)
+	widgets.append(widget4)
+	widgets.append(widget5)
+
+	return widgets
+
+
 class smartManufacturing:
 
-	def __init__(self):
-		self.widgets = None
+	def __init__(self, widgets):
+		self.widgets = widgets
 		self.widgetsNum = None
 		self.distances = None
 		self.heuristics = None
@@ -16,19 +61,24 @@ class smartManufacturing:
 		self.calcHeuristic()
 
 	def initialize(self):
-		widget1 = ["A","E","D","C","A"]
-		widget2 = ["B","E","A","C","D"]
-		widget3 = ["B","A","B","C","E"]
-		widget4 = ["D","A","D","B","D"]
-		widget5 = ["B","E","C","B","D"]
+		
+
+		#print(widget1, widget2, widget3, widget4, widget5)
+
+		widget1 = ["A","D","C","B","A","D","B","B"]
+		widget2 = ["D","A","D","C","D","E","A","B"]
+		widget3 = ["C","C","A","E","B","D","C","E"]
+		widget4 = ["D","C","A","C","D","A","B","D"]
+		widget5 = ["A","C","E","D","C","D","B","A"]
 
 		self.widgets = []
-		self.widgets.append(widget1)
+		self.widgets.append(widget1)	
 		self.widgets.append(widget2)
 		self.widgets.append(widget3)
 		self.widgets.append(widget4)
 		self.widgets.append(widget5)
 
+		
 		self.letters.append(0)
 		self.letters.append(0)
 		self.letters.append(0)

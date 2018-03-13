@@ -33,11 +33,11 @@ class Board:
 		self.int_array = []
 	
 		emptyarray1 = [0, 0, 0, 0, 0, 0, 0]
-		emptyarray2 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray2 = [0, 2, 0, 0, 0, 0, 0]
 		emptyarray3 = [0, 0, 0, 0, 0, 0, 0]
 		emptyarray4 = [0, 0, 0, 0, 0, 0, 0]
 		emptyarray5 = [0, 0, 0, 0, 0, 0, 0]
-		emptyarray6 = [0, 0, 0, 0, 0, 0, 0]
+		emptyarray6 = [0, 0, 0, 0, 0, 1, 0]
 		emptyarray7 = [0, 0, 0, 0, 0, 0, 0]
 
 		self.int_array.append(emptyarray7)
