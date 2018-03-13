@@ -74,7 +74,7 @@ def blueWinningBlock(board):
 					idx += 1
 				board.blocks.append(winBlock)
 
-def reflexAgent(board):
+def reflexAgentBlue(board):
 	
 	stones = []
 	stones.append([])
@@ -90,10 +90,8 @@ def reflexAgent(board):
 		if (item.state == 2 and item.blues == 4):
 			stones[0].append(item)
 		elif(item.state == 3 and item.reds == 4):
-			print("four")
 			stones[1].append(item)
 		elif(item.state == 3 and item.reds == 3 and item.openEnded == 1):
-			print("three")
 			stones[2].append(item)
 		elif (item.state == 2 and item.blues == 3):
 			stones[3].append(item)
@@ -114,7 +112,7 @@ def reflexAgent(board):
 	i = 6 
 	j = 6
 	if spots == []:
-		board.updateBlocks2(4, 4, 1)
+		board.updateBlocks2(3, 3, 1)
 		#board.int_array[4][4] = 1
 		return board
 	for item in spots:
@@ -125,5 +123,57 @@ def reflexAgent(board):
 			j = item.y
 			i = item.x
 	board.updateBlocks2(i, j, 1)
+	#board.int_array[i][j] = 1
+	return board
+
+def reflexAgentRed(board):
+	
+	stones = []
+	stones.append([])
+	stones.append([])
+	stones.append([])
+	stones.append([])
+	stones.append([])
+	stones.append([])
+	spots = []
+	for item in board.blocks:
+		if (item.reds == 5 or item.blues == 5):
+			board.victory = True
+		if (item.state == 3 and item.reds == 4):
+			stones[0].append(item)
+		elif(item.state == 2 and item.blues == 4):
+			stones[1].append(item)
+		elif(item.state == 2 and item.blues == 3 and item.openEnded == 1):
+			stones[2].append(item)
+		elif (item.state == 3 and item.reds == 3):
+			stones[3].append(item)
+		elif (item.state == 3 and item.reds == 2):
+			stones[4].append(item)
+		elif (item.state == 3 and item.reds == 1):
+			stones[5].append(item)
+	for m, item in enumerate(stones):
+		if(item != []):
+			for index in item:
+				for idx in index.nodes:
+					if (idx.isBlue == False and idx.isRed == False):
+						if (m == 0 or m == 3 or m == 4 or m == 5) and (idx.isNeighbor() == 1 or idx.isNeighbor() == 3):
+							spots.append(idx)
+						elif (m == 1 or m == 2) and (idx.isNeighbor() == 1 or idx.isNeighbor() == 2):
+							spots.append(idx)
+			break
+	i = 6 
+	j = 6
+	if spots == []:
+		board.updateBlocks2(4, 4, 2)
+		#board.int_array[4][4] = 1
+		return board
+	for item in spots:
+		if item.y <= j and item.x < i:
+			j = item.y
+			i = item.x
+		if item.y < j:
+			j = item.y
+			i = item.x
+	board.updateBlocks2(i, j, 2)
 	#board.int_array[i][j] = 1
 	return board

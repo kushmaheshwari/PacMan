@@ -46,7 +46,7 @@ def searchTree(board, depth, counter):
 def searchTree2(board, depth, alpha, beta, counter):
 	counter += 1
 	if depth == 3:
-		weight = weighBoard(board)
+		weight = weighBoard2(board)
 		return board, weight, counter
 	newboard = board
 	x = 8
@@ -62,8 +62,8 @@ def searchTree2(board, depth, alpha, beta, counter):
 			if (alpha > beta):
 				break
 			if (board.node_array[i][j].isBlue == False and board.node_array[i][j].isRed == False):
-				if depth == 1:
-					newboard.updateBlocks(i, j, 1)
+				if depth == 1 or depth == 3:
+					newboard.updateBlocks(i, j, 2)
 					updatedboard, weight, newCounter = searchTree2(newboard, depth + 1, -2000, beta, counter)
 					counter = newCounter
 					newboard.updateBlocks(i, j, 0)
@@ -74,7 +74,7 @@ def searchTree2(board, depth, alpha, beta, counter):
 						x = i
 						y = j
 				else:
-					newboard.updateBlocks(i, j, 2)
+					newboard.updateBlocks(i, j, 1)
 					updatedboard, weight, newCounter = searchTree2(newboard, depth + 1, alpha, 2000, counter)
 					counter = newCounter
 					newboard.updateBlocks(i, j, 0)
@@ -90,7 +90,7 @@ def searchTree2(board, depth, alpha, beta, counter):
 
 	#print(depth, x)
 	if depth == 0 and x != 8:
-		newboard.updateBlocks2(x, y, 2)
+		newboard.updateBlocks2(x, y, 1)
 	return newboard, value, counter
 
 def weighBoard(board):
@@ -98,7 +98,7 @@ def weighBoard(board):
 
 	for item in board.blocks:
 		if (item.state == 2 and item.blues == 5):
-			weight -= 200
+			weight -= 400
 		elif (item.state == 2 and item.blues == 4):
 			weight -= 51
 		elif (item.state == 2 and item.blues == 3 and item.openEnded == 1):
@@ -121,5 +121,36 @@ def weighBoard(board):
 			weight += 51
 		elif(item.state == 3 and item.reds == 5):	
 			weight += 200	
+
+	return weight
+
+def weighBoard2(board):
+	weight = 0
+
+	for item in board.blocks:
+		if (item.state == 2 and item.blues == 5):
+			weight += 200
+		elif (item.state == 2 and item.blues == 4):
+			weight += 51
+		elif (item.state == 2 and item.blues == 3 and item.openEnded == 1):
+			weight += 51
+		elif (item.state == 2 and item.blues == 3):
+			weight += 26
+		elif (item.state == 2 and item.blues == 2):
+			weight += 13
+		#elif (item.state == 2 and item.blues == 1):
+		#	stones[4].append(item)
+		#elif(item.state == 3 and item.reds == 1):
+		#	stones[5].append(item)
+		elif(item.state == 3 and item.reds == 2):
+			weight -= 13
+		elif(item.state == 3 and item.reds == 3):
+			weight -=26
+		elif (item.state == 3 and item.blues == 3 and item.openEnded == 1):
+			weight -= 51
+		elif(item.state == 3 and item.reds == 4):
+			weight -= 51
+		elif(item.state == 3 and item.reds == 5):	
+			weight -= 400	
 
 	return weight

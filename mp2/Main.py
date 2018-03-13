@@ -218,15 +218,20 @@ if __name__ == "__main__":
 	#board = reflexAgent(board)
 	#board.printNodes()
 	while (board.victory != True and counter < 25):
-		board = reflexAgent(board)
+		board = reflexAgentBlue(board)
 		board.printNodes()
-		weight = weighBoard(board)
-		print(weight)
-		#board, value, newCounter = searchTree(board, 0, 0)
-		board, value, newCounter = searchTree2(board, 0, -2000, 2000, 0)
-		print ("Nodes Expanded = " + str(newCounter))
+		board = reflexAgentRed(board)
 		board.printNodes()
-		weight = weighBoard(board)
-		print(weight)
+		if False:
+			weight = weighBoard(board)
+			print(weight)
+			board, value, newCounter = searchTree(board, 0, 0)
+			board.printNodes()
+			print ("Nodes Expanded = " + str(newCounter))
+			board, value, newCounter = searchTree2(board, 0, -2000, 2000, 0)
+			print ("Nodes Expanded = " + str(newCounter))
+			board.printNodes()
+			weight = weighBoard(board)
+			print(weight)
 		counter += 1
 		
