@@ -225,7 +225,7 @@ if __name__ == "__main__":
 	blueWinningBlock(board)
 	#board = reflexAgent(board)
 	#board.printNodes()
-	while (board.victory != True and counter < 20):
+	while (board.victory != True and counter < 25):
 		board = reflexAgentBlue(board)
 		board.printNodes()
 		board = reflexAgentRed(board)

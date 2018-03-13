@@ -115,7 +115,7 @@ def reflexAgentBlue(board):
 	i = 6 
 	j = 6
 	print (spots)
-	if spots == []:
+	if spots == [] and board.node_array[5][5].isBlue == False:
 		board.updateBlocks2(5, 5, 1)
 		#board.int_array[4][4] = 1
 		return board
@@ -126,8 +126,14 @@ def reflexAgentBlue(board):
 		if item.y < j:
 			j = item.y
 			i = item.x
-	board.updateBlocks2(i, j, 1)
-	#board.int_array[i][j] = 1
+	if (board.node_array[i][j].isBlue == False and board.node_array[i][j].isRed == False):
+		board.updateBlocks2(i, j, 1)
+	else:
+		for i in range(board.rows):
+			for j in range(board.rows):
+				if (board.node_array[i][j].isBlue == False and board.node_array[i][j].isRed == False):
+					board.updateBlocks2(i, j, 1)
+					return board
 	return board
 
 def reflexAgentRed(board):
@@ -168,7 +174,7 @@ def reflexAgentRed(board):
 			break
 	i = 6 
 	j = 6
-	if spots == []:
+	if spots == [] and board.node_array[1][1].isRed == False:
 		board.updateBlocks2(1, 1, 2)
 		#board.int_array[4][4] = 1
 		return board
@@ -179,6 +185,13 @@ def reflexAgentRed(board):
 		if item.y < j:
 			j = item.y
 			i = item.x
-	board.updateBlocks2(i, j, 2)
+	if (board.node_array[i][j].isRed == False and board.node_array[i][j].isBlue == False):
+		board.updateBlocks2(i, j, 2)
+	else:
+		for i in range(board.rows):
+			for j in range(board.rows):
+				if (board.node_array[i][j].isRed == False and board.node_array[i][j].isBlue == False):
+					board.updateBlocks2(i, j, 2)
+					return board
 	#board.int_array[i][j] = 1
 	return board
