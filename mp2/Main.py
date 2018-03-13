@@ -6,11 +6,11 @@ from Gomoku import *
 from blueAgent import *
 from minimax import *
 
-def partOne():
-	data = smartManufacturing()
+def partOne(widgets):
+	data = smartManufacturing(widgets)
 	counter = 0
 	countLetters(data)
-	printLetterCount(data)
+	#printLetterCount(data)
 
 	queue = []
 
@@ -21,7 +21,7 @@ def partOne():
 		value, node = heappop(queue)
 		phrase = node.phrase
 		phrase += node.letter
-		print(phrase, node.value)
+		#print(phrase, node.value)
 		countLetters(data)
 		#printLetterCount(data)
 
@@ -30,7 +30,7 @@ def partOne():
 		popQueues(data, phrase)
 		countLetters(data)
 		updateQueue(data, queue, phrase)
-		printLetterCount(data)
+		#printLetterCount(data)
 		
 		
 		if (data.totalLetters == 0):
@@ -87,7 +87,7 @@ def updateQueue(data, queue, phrase):
 		if (item != 0):
 			value = maxWidgetLength(data) + maxLetter(data) - item + len(phrase)
 			#value = maxWidgetLength(data) + len(phrase) 
-			print (index, maxWidgetLength(data), maxLetter(data), item, len(phrase))
+			#print (index, maxWidgetLength(data), maxLetter(data), item, len(phrase))
 			if (index == 0):
 				#print('amount = ' + str(item) + ', value = ' + str(value) + ', letter = A')
 				node = Node('A', value, 5, phrase)
@@ -109,13 +109,13 @@ def updateQueue(data, queue, phrase):
 				node = Node('E', value, 5, phrase)
 				heappush(queue, (node.value, node))
 
-def partTwo():
-	data = smartManufacturing()
+def partTwo(widgets):
+	data = smartManufacturing(widgets)
 
 	counter = 0
 	countLetters2(data)
-	printLetterCount(data)
-	print(data.maxHeuristic)
+	#printLetterCount(data)
+	#print(data.maxHeuristic)
 
 	queue = []
 
@@ -124,19 +124,19 @@ def partTwo():
 	while (len(queue) > 0):
 		counter += 1
 		value, node = heappop(queue)
-		print(node.letter)
+		#print(node.letter)
 		phrase = node.phrase
 		phrase += node.letter
-		print(phrase, node.h)
+		#print(phrase, node.h)
 		countLetters2(data)
-		printLetterCount(data)
+		#printLetterCount(data)
 
 		data = smartManufacturing()
 
 		popQueues(data, phrase)
 		countLetters2(data)
 		updateQueue2(data, queue, phrase, node.h)
-		printLetterCount(data)
+		#printLetterCount(data)
 
 		if (data.totalLetters == 0):
 			print ("Finished = " + phrase)
@@ -165,7 +165,7 @@ def updateQueue2(data, queue, phrase, distToState):
 			#value = max(data.maxHeuristic) + (dist * (maxLetter(data) - item + 1)) + distToState
 			value = max(data.maxHeuristic) + dist + distToState
 			
-			print(value)
+			#print(value)
 			if index == 0:
 				node = Node('A', value, dist + distToState, phrase)
 				heappush(queue, (node.value, node))
@@ -189,7 +189,7 @@ def countLetters2(data):
 			character = item[0]
 			length = len(item)
 			value = data.heuristics[index]
-			value = value[5-length]
+			value = len(data.widgets[0])-length
 			if (character == 'A'):
 				letNum = 0
 			if (character == 'B'):
@@ -208,15 +208,23 @@ def countLetters2(data):
 	data.totalLetters = data.letters[0] + data.letters[1] + data.letters[2] + data.letters[3] + data.letters[4]
 
 if __name__ == "__main__":
-	#partOne()
-	#partTwo()
+	#widgets = generate(8)
+	#print(widgets)
+	#widgets2 = []
+	#for i in widgets:
+	#	emptyarray = []
+	#	for j in i:
+	#		emptyarray.append(j)
+	#	widgets2.append(emptyarray)
+	#partOne(widgets)
+	#partTwo(widgets2)
 
 	board = Board()
 	value = 0
 	counter = 0
 	blueWinningBlock(board)
-	#board = reflexAgent(board)
-	#board.printNodes()
+	board = reflexAgent(board)
+	board.printNodes()
 	while (board.victory != True and counter < 25):
 		board = reflexAgentBlue(board)
 		board.printNodes()
