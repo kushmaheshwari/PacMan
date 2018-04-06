@@ -1,4 +1,4 @@
-
+from Digits import * 
 
 class Train:
 	def __init__(self, fname):
@@ -6,6 +6,7 @@ class Train:
 		self.num_digits = None
 		self.curDigit = None
 		self.priors = None
+		self.Digits = None
 
 		self.fname = fname
 
@@ -15,17 +16,14 @@ class Train:
 	def readFile(self):
 		self.num_array = []
 		self.num_digits = []
+		self.Digits = []
 
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
-		self.num_digits.append(0)
+		a = 0
+		while (a < 10):
+			digit = Digits()
+			self.num_digits.append(0)
+			self.Digits.append(digit)
+			a += 1
 
 		with open(self.fname) as f:
 		    	content = f.readlines()
@@ -40,11 +38,17 @@ class Train:
 					counter = 0
 					self.num_digits[int(character)] += 1
 					self.curDigit = int(character)
+					self.Digits[int(character)].updateDigitProbs(self.num_array)
+					self.num_array = []
 				else:
 					row.append(int(character))
-			self.num_array.append(row)
+			if (counter != 0):
+				self.num_array.append(row)
+		cc = 0
+		while cc < 10:
+			self.Digits[cc].division()
 
-	def calcPriors():
+	def calcPriors(self):
 		self.priors = []
 
 		total = 0
@@ -52,7 +56,10 @@ class Train:
 			total = total + val
 
 		for val in self.num_digits:
-			
+			prob = val/total
+			self.priors.append(prob)
+
+		print(self.priors)
 
 if __name__ == "__main__":
 	train = Train('digitdata/digitdata/optdigits-orig_train.txt')
