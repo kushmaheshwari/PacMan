@@ -11,6 +11,7 @@ class Test:
 		self.train = train
 		self.matrix = None
 		self.percentageMatrix = None
+		self.oddsMatrix = None
 
 		self.initializeMatrix()
 		self.readTestFile()
@@ -54,6 +55,8 @@ class Test:
 		print(self.train.classAccuracy)
 
 		self.calcPercentages(self.matrix)
+
+		self.printRatios()
 
 	def calculatePosteriors(self, num_array):
 		self.map = []
@@ -123,6 +126,56 @@ class Test:
 		print('Below is the confusion matrix.')
 		print(self.percentageMatrix)
 
+
+	def printRatios(self):
+		#actual - 2 vs guessed - 8
+		self.singularLog(2)
+		self.singularLog(8)
+		self.oddsRatio(2, 8)
+
+
+	def oddsRatio(self, digitOne, digitTwo):
+		self.oddsMatrix = []
+
+		one = self.train.Digits[digitOne].one_prob
+		two = self.train.Digits[digitTwo].one_prob
+
+		for index, row in enumerate(one):
+			line = []
+			for idx, col in enumerate(row):
+				currRow = two[index]
+				currVal = currRow[idx]
+				val = log(col/currVal)
+				if (val > 0.5):
+					value = '+'
+				elif (val <= 0.5 and val >= -0.5):
+					value = '0'
+				else:
+					value = '-'
+				line.append(value)
+			self.oddsMatrix.append(line)
+		print(self.oddsMatrix)
+
+
+	def singularLog(self, digit):
+		one = self.train.Digits[digit].one_prob
+
+		singLogMatrix = []
+
+		for row in one:
+			line = []
+			for item in row:
+				val = log(item)
+				if (val > 0.5):
+					value = '+'
+				elif (val <= 0.5 and val >= -0.5):
+					value = '0'
+				else:
+					value = '-'
+				line.append(value)
+			singLogMatrix.append(line)
+
+		#print (singLogMatrix)
 
 
 

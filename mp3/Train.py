@@ -51,6 +51,7 @@ class Train:
 		while cc < 10:
 			#print ("--------------------------------------------------------------------------------------------")
 			self.Digits[cc].division()
+			self.Digits[cc].convertToOne()
 			cc += 1
 
 	def calcPriors(self):

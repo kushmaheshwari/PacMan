@@ -8,6 +8,7 @@ class Digits:
 		self.total_digits = 0
 		self.correctGuesses = 0
 		self.totalGuesses = 0
+		self.one_prob = None
 
 		self.initializeProb()
 
@@ -37,6 +38,7 @@ class Digits:
 				b += 1
 			a += 1
 
+
 	def division(self):
 		k = 6
 		a = 0
@@ -48,5 +50,16 @@ class Digits:
 				b += 1
 			a += 1
 		#print(self.zero_prob)
+
+	def convertToOne(self):
+		self.one_prob = []
+
+		for row in self.zero_prob:
+			line = []
+			for item in row:
+				value = 1 - item
+				line.append(value)
+			self.one_prob.append(line)
+
 
 
