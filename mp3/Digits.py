@@ -1,3 +1,5 @@
+from Train import *
+
 class Digits:
 	def __init__(self):
 		self.i = 0
@@ -25,25 +27,24 @@ class Digits:
 		a = 0
 		while a < 32:
 			b = 0
-			row = []
 			while b < 32:
 				zeroes = self.zero_prob[a]
 				intermed = num_array[a]
 				if (intermed[b] == 0):
 					zeroes[b] += 1
 				b += 1
-			self.zero_prob.append(row)
 			a += 1
 
 	def division(self):
+		k = 5
 		a = 0
 		while a < 32:
 			b = 0
+			zeroes = self.zero_prob[a]
 			while b < 32:
-				zeroes = self.zero_prob[a]
-				zeroes[b] = zeroes[b]/self.total_digits
+				zeroes[b] = (zeroes[b] + k)/(self.total_digits + (k*2))
 				b += 1
 			a += 1
-		print(self.zero_prob)
+		#print(self.zero_prob)
 
 

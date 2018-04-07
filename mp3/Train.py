@@ -1,4 +1,5 @@
 from Digits import * 
+from Test import *
 
 class Train:
 	def __init__(self, fname):
@@ -46,7 +47,9 @@ class Train:
 				self.num_array.append(row)
 		cc = 0
 		while cc < 10:
+			print ("--------------------------------------------------------------------------------------------")
 			self.Digits[cc].division()
+			cc += 1
 
 	def calcPriors(self):
 		self.priors = []
@@ -63,4 +66,5 @@ class Train:
 
 if __name__ == "__main__":
 	train = Train('digitdata/digitdata/optdigits-orig_train.txt')
+	test = Test('digitdata/digitdata/optdigits-orig_test.txt', train)
 	print (train.num_digits)
