@@ -6,6 +6,8 @@ class Digits:
 		self.j = 0
 		self.zero_prob = None
 		self.total_digits = 0
+		self.correctGuesses = 0
+		self.totalGuesses = 0
 
 		self.initializeProb()
 

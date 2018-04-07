@@ -5,6 +5,7 @@ class Test:
 		stringGuess = ""
 		self.num_array = None
 		self.map = None
+		self.idx = None
 		self.fname = fname
 		self.train = train
 
@@ -27,6 +28,12 @@ class Test:
 					counter = 0
 					self.calculatePosteriors(self.num_array)
 					self.num_array = []
+					digit = self.train.Digits[int(character)]
+					digit.totalGuesses += 1
+					if (self.idx == int(character)):
+						print('True')
+						digit.correctGuesses += 1
+					print(digit.correctGuesses/digit.totalGuesses)							
 				else:
 					row.append(int(character))
 			if (counter != 0):
@@ -62,5 +69,7 @@ class Test:
 			c += 1
 		print('-------------------------------------------------------')
 		print(self.map)
+		self.idx = self.map.index(max(self.map))
+		print(self.idx)
 
 		
