@@ -1,4 +1,5 @@
 from math import log
+from decimal import Decimal
 
 class Test:
 	def __init__(self, fname, train):
@@ -8,7 +9,10 @@ class Test:
 		self.idx = None
 		self.fname = fname
 		self.train = train
+		self.matrix = None
+		self.percentageMatrix = None
 
+		self.initializeMatrix()
 		self.readTestFile()
 
 	def readTestFile(self):
@@ -33,7 +37,8 @@ class Test:
 					if (self.idx == int(character)):
 						#print('True')
 						digit.correctGuesses += 1
-					#print(digit.correctGuesses/digit.totalGuesses)							
+					#print(digit.correctGuesses/digit.totalGuesses)	
+					self.updateConfusion(self.num_array, character)						
 				else:
 					row.append(int(character))
 			if (counter != 0):
@@ -47,6 +52,8 @@ class Test:
 
 		print('Below is the class accuracy.')
 		print(self.train.classAccuracy)
+
+		self.calcPercentages(self.matrix)
 
 	def calculatePosteriors(self, num_array):
 		self.map = []
@@ -81,4 +88,44 @@ class Test:
 		self.idx = self.map.index(max(self.map))
 		#print(self.idx)
 
-		
+	def initializeMatrix(self):
+		self.matrix = []
+
+		a = 0
+		while a < 10:
+			row = []
+			b = 0
+			while b < 10:
+				row.append(0)
+				b += 1
+			self.matrix.append(row)
+			a += 1
+
+
+	def updateConfusion(self, num_array, character):
+		colIndex = int(character)
+		rowIndex = self.idx
+		intermed = self.matrix[rowIndex]
+		intermed[colIndex] += 1
+
+	def calcPercentages(self, matrix):
+		self.percentageMatrix = []
+
+		for row in matrix:
+			line = []
+			counter = 0
+			for index, item in enumerate(row):
+				dig = self.train.Digits[index]
+				total = dig.totalGuesses
+				line.append(item/total)
+			self.percentageMatrix.append(line)
+
+		print('Below is the confusion matrix.')
+		print(self.percentageMatrix)
+
+
+
+
+
+
+				

@@ -38,7 +38,7 @@ class Digits:
 			a += 1
 
 	def division(self):
-		k = 5
+		k = 6
 		a = 0
 		while a < 32:
 			b = 0
