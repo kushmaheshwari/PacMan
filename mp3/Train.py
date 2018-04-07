@@ -8,6 +8,7 @@ class Train:
 		self.curDigit = None
 		self.priors = None
 		self.Digits = None
+		self.classAccuracy = None
 
 		self.fname = fname
 
@@ -18,6 +19,7 @@ class Train:
 		self.num_array = []
 		self.num_digits = []
 		self.Digits = []
+		self.classAccuracy = []
 
 		a = 0
 		while (a < 10):
@@ -47,7 +49,7 @@ class Train:
 				self.num_array.append(row)
 		cc = 0
 		while cc < 10:
-			print ("--------------------------------------------------------------------------------------------")
+			#print ("--------------------------------------------------------------------------------------------")
 			self.Digits[cc].division()
 			cc += 1
 
@@ -62,6 +64,7 @@ class Train:
 			prob = val/total
 			self.priors.append(prob)
 
+		print('Below are the priors.')
 		print(self.priors)
 
 if __name__ == "__main__":

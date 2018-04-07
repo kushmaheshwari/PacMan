@@ -31,13 +31,22 @@ class Test:
 					digit = self.train.Digits[int(character)]
 					digit.totalGuesses += 1
 					if (self.idx == int(character)):
-						print('True')
+						#print('True')
 						digit.correctGuesses += 1
-					print(digit.correctGuesses/digit.totalGuesses)							
+					#print(digit.correctGuesses/digit.totalGuesses)							
 				else:
 					row.append(int(character))
 			if (counter != 0):
 				self.num_array.append(row)
+
+		cc = 0
+		while cc < 10:
+			digital = self.train.Digits[cc]
+			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
+			cc += 1
+
+		print('Below is the class accuracy.')
+		print(self.train.classAccuracy)
 
 	def calculatePosteriors(self, num_array):
 		self.map = []
@@ -67,9 +76,9 @@ class Test:
 
 			self.map.append(total)
 			c += 1
-		print('-------------------------------------------------------')
-		print(self.map)
+		#print('-------------------------------------------------------')
+		#print(self.map)
 		self.idx = self.map.index(max(self.map))
-		print(self.idx)
+		#print(self.idx)
 
 		
