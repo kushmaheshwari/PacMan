@@ -1,18 +1,18 @@
 from Train import *
 
-class Digits:
+class Digits: #class containing 
 	def __init__(self):
-		self.i = 0
-		self.j = 0
-		self.zero_prob = None
-		self.total_digits = 0
-		self.correctGuesses = 0
-		self.totalGuesses = 0
-		self.one_prob = None
+		self.i = 0 #x coordinate
+		self.j = 0 #y coordinate
+		self.zero_prob = None #32x32 array containing probability that each pixel is a 0 given the class
+		self.total_digits = 0 #total count of input images
+		self.correctGuesses = 0 #number of guesses about class that are correct
+		self.totalGuesses = 0 #total number of guesses (whether right or wrong)
+		self.one_prob = None #32x32 array containing probability that each pixel is a 1 given the class
 
 		self.initializeProb()
 
-	def initializeProb(self):
+	def initializeProb(self): #creates empty 32x32 array to hold probability of 0 for each pixel
 		self.zero_prob = []
 
 		a = 0
@@ -25,8 +25,8 @@ class Digits:
 			self.zero_prob.append(row)
 			a += 1
 
-	def updateDigitProbs(self, num_array):
-		self.total_digits += 1
+	def updateDigitProbs(self, num_array): #update count of how many times a zero shows up at a certain pixel given a class
+		self.total_digits += 1 #keep count of input instances
 		a = 0
 		while a < 32:
 			b = 0
@@ -39,8 +39,8 @@ class Digits:
 			a += 1
 
 
-	def division(self):
-		k = 6
+	def division(self): #divide the count of zeroes in zero_prob to calcuate percentage
+		k = 6 #most ideal constant for laplace smoothing
 		a = 0
 		while a < 32:
 			b = 0
@@ -51,7 +51,7 @@ class Digits:
 			a += 1
 		#print(self.zero_prob)
 
-	def convertToOne(self):
+	def convertToOne(self): #convert zero_prob to calculate probability of 1
 		self.one_prob = []
 
 		for row in self.zero_prob:

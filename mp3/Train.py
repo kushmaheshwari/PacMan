@@ -3,12 +3,12 @@ from Test import *
 
 class Train:
 	def __init__(self, fname):
-		self.num_array = None
-		self.num_digits = None
+		self.num_array = None #holds 0s or 1s as in input file
+		self.num_digits = None 
 		self.curDigit = None
-		self.priors = None
-		self.Digits = None
-		self.classAccuracy = None
+		self.priors = None #array of priors
+		self.Digits = None #digits object that hold information for class for each digit (0-9)
+		self.classAccuracy = None #classification accuracy probabilities
 
 		self.fname = fname
 
@@ -21,19 +21,19 @@ class Train:
 		self.Digits = []
 		self.classAccuracy = []
 
-		a = 0
+		a = 0 #initializes digits objects
 		while (a < 10):
 			digit = Digits()
 			self.num_digits.append(0)
 			self.Digits.append(digit)
 			a += 1
 
-		with open(self.fname) as f:
+		with open(self.fname) as f: #read in train file
 		    	content = f.readlines()
 		content = [x.strip() for x in content]
 		counter = 0
 
-		for line in content:
+		for line in content: #initializes num array
 			row = []
 			counter += 1
 			for character in line:
@@ -47,14 +47,14 @@ class Train:
 					row.append(int(character))
 			if (counter != 0):
 				self.num_array.append(row)
-		cc = 0
+		cc = 0 #calculates zero probabilities
 		while cc < 10:
 			#print ("--------------------------------------------------------------------------------------------")
 			self.Digits[cc].division()
 			self.Digits[cc].convertToOne()
 			cc += 1
 
-	def calcPriors(self):
+	def calcPriors(self): #calculates priors
 		self.priors = []
 
 		total = 0

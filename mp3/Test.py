@@ -9,9 +9,9 @@ class Test:
 		self.idx = None
 		self.fname = fname
 		self.train = train
-		self.matrix = None
-		self.percentageMatrix = None
-		self.oddsMatrix = None
+		self.matrix = None #holds counts of guessed vs actual class
+		self.percentageMatrix = None #holds percentages of probabilities of matrix
+		self.oddsMatrix = None #holds odd ratio matrix
 
 		self.initializeMatrix()
 		self.readTestFile()
@@ -19,7 +19,7 @@ class Test:
 	def readTestFile(self):
 		self.num_array = []
 
-		with open(self.fname) as f:
+		with open(self.fname) as f: #read in test file
 		    	content = f.readlines()
 		content = [x.strip() for x in content]
 		
@@ -29,7 +29,7 @@ class Test:
 			row = []
 			counter += 1
 			for character in line:
-				if (counter == 33):
+				if (counter == 33): #looks at what class the image belongs (looks at digit)
 					counter = 0
 					self.calculatePosteriors(self.num_array)
 					self.num_array = []
@@ -45,7 +45,7 @@ class Test:
 			if (counter != 0):
 				self.num_array.append(row)
 
-		cc = 0
+		cc = 0 
 		while cc < 10:
 			digital = self.train.Digits[cc]
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
@@ -58,7 +58,7 @@ class Test:
 
 		self.printRatios()
 
-	def calculatePosteriors(self, num_array):
+	def calculatePosteriors(self, num_array): #calculates posterior probabilities
 		self.map = []
 
 		total = 0
@@ -91,7 +91,7 @@ class Test:
 		self.idx = self.map.index(max(self.map))
 		#print(self.idx)
 
-	def initializeMatrix(self):
+	def initializeMatrix(self): #initalizes confusion matrix
 		self.matrix = []
 
 		a = 0
@@ -105,13 +105,13 @@ class Test:
 			a += 1
 
 
-	def updateConfusion(self, num_array, character):
+	def updateConfusion(self, num_array, character): #counts guessed digits given what digits it should actually be
 		colIndex = int(character)
 		rowIndex = self.idx
 		intermed = self.matrix[rowIndex]
 		intermed[colIndex] += 1
 
-	def calcPercentages(self, matrix):
+	def calcPercentages(self, matrix): #takes counts of guessed digits and calculates percentage that is correct
 		self.percentageMatrix = []
 
 		for row in matrix:
@@ -127,14 +127,14 @@ class Test:
 		print(self.percentageMatrix)
 
 
-	def printRatios(self):
+	def printRatios(self): #print log of odd ratios and log of probabilities
 		#actual - 2 vs guessed - 8
 		self.singularLog(2)
 		self.singularLog(8)
 		self.oddsRatio(2, 8)
 
 
-	def oddsRatio(self, digitOne, digitTwo):
+	def oddsRatio(self, digitOne, digitTwo): #print log of odd ratios
 		self.oddsMatrix = []
 
 		one = self.train.Digits[digitOne].one_prob
@@ -157,7 +157,7 @@ class Test:
 		print(self.oddsMatrix)
 
 
-	def singularLog(self, digit):
+	def singularLog(self, digit): #calculates feature likelihoods of a class
 		one = self.train.Digits[digit].one_prob
 
 		singLogMatrix = []
