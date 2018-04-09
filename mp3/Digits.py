@@ -76,9 +76,6 @@ class Digits: #class that contains information about each digit class
 		self.weights = []
 		x = 0
 
-	def initializeMax(self): #initializes num_array for test token with maximum posterior probability for the digit class
-		self.maxNum_array = []
-
 		a = 0
 		while a < 32:
 			b = 0
@@ -90,16 +87,17 @@ class Digits: #class that contains information about each digit class
 			self.weights.append(row)
 			a += 1
 
-	def updateWeights(self, lRate, Error, num_array):
-		self.bias = self.bias + lRate*Error
+	def initializeMax(self): #initializes num_array for test token with maximum posterior probability for the digit class
+		self.maxNum_array = []
 
-				row.append(0)
+		row.append(0)
 				b += 1
 			self.maxNum_array.append(row)
 			a += 1
+	
 
-	def initializeMin(self): #initializes num_array for test token with minimum posterior probability for the digit class
-		self.minNum_array = []
+	def updateWeights(self, lRate, Error, num_array):
+		self.bias = self.bias + lRate*Error
 
 		a = 0
 		while a < 32:
@@ -109,6 +107,10 @@ class Digits: #class that contains information about each digit class
 			while b < 32:
 				row[b] = row[b] + lRate*Error*numRow[b]
 				b += 1
+
+	def initializeMin(self): #initializes num_array for test token with minimum posterior probability for the digit class
+		self.minNum_array = []
+
 			row = []
 			while b < 32:
 				row.append(0)
