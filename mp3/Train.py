@@ -2,7 +2,7 @@ from Digits import *
 from Test import *
 from Perceptron import *
 
-class Train:
+class Train: #class that takes in an manipulates training file
 	def __init__(self, fname):
 		self.num_array = None #holds 0s or 1s as in input file
 		self.num_digits = None 
@@ -66,11 +66,12 @@ class Train:
 			prob = val/total
 			self.priors.append(prob)
 
-		print('Below are the priors.')
-		print(self.priors)
+		#print('Below are the priors.')
+		#print(self.priors)
 
 if __name__ == "__main__":
 	train = Train('digitdata/digitdata/optdigits-orig_train.txt')
 	#test = Test('digitdata/digitdata/optdigits-orig_test.txt', train)
 	perceptron = Perceptron('digitdata/digitdata/optdigits-orig_train.txt', train)
-	print (train.num_digits)
+	#print (train.num_digits)
+
