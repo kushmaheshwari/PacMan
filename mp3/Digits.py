@@ -90,7 +90,12 @@ class Digits: #class that contains information about each digit class
 	def initializeMax(self): #initializes num_array for test token with maximum posterior probability for the digit class
 		self.maxNum_array = []
 
-		row.append(0)
+		a = 0
+		while a < 32:
+			b = 0
+			row = []
+			while b < 32:
+				row.append(0)
 				b += 1
 			self.maxNum_array.append(row)
 			a += 1
@@ -111,11 +116,13 @@ class Digits: #class that contains information about each digit class
 	def initializeMin(self): #initializes num_array for test token with minimum posterior probability for the digit class
 		self.minNum_array = []
 
+		a = 0
+		while a < 32:
+			b = 0
 			row = []
 			while b < 32:
 				row.append(0)
 				b += 1
 			self.minNum_array.append(row)
 			a += 1
-
 

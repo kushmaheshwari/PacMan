@@ -139,9 +139,8 @@ class Test: #class that takes in and manipulates testing file
 
 	def printRatios(self): #print log of odd ratios and log of probabilities
 		#actual - 2 vs guessed - 8
-		self.singularLog(2)
-		self.singularLog(8)
-		self.oddsRatio(2, 8)
+		#self.singularLog(7)
+		self.oddsRatio(9, 7)
 
 
 	def oddsRatio(self, digitOne, digitTwo): #print log of odd ratios
@@ -161,11 +160,11 @@ class Test: #class that takes in and manipulates testing file
 				elif (val <= 1 and val > 0):
 					value = '+'
 				elif (val <= 0 and val > -1):
-					value = '0'
+					value = '.'
 				elif (val <= -1 and val >= -2):
 					value = '-'
 				else:
-					value = '.'
+					value = '0'
 				line.append(value)
 			self.oddsMatrix.append(line)
 		self.printArray(self.oddsMatrix)
