@@ -3,7 +3,6 @@ from decimal import Decimal
 
 class Test:
 	def __init__(self, fname, train):
-		stringGuess = ""
 		self.num_array = None
 		self.map = None
 		self.idx = None
@@ -68,7 +67,6 @@ class Test:
 			digit = self.train.Digits[c]
 
 			total = 0
-
 			total += log(self.train.priors[c])
 
 			a = 0

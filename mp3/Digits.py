@@ -1,16 +1,21 @@
 from Train import *
+import random
+import decimal
 
 class Digits: #class containing 
 	def __init__(self):
-		self.i = 0 #x coordinate
-		self.j = 0 #y coordinate
+
 		self.zero_prob = None #32x32 array containing probability that each pixel is a 0 given the class
 		self.total_digits = 0 #total count of input images
 		self.correctGuesses = 0 #number of guesses about class that are correct
 		self.totalGuesses = 0 #total number of guesses (whether right or wrong)
 		self.one_prob = None #32x32 array containing probability that each pixel is a 1 given the class
 
+		self.weights = None
+		self.bias = 0
+
 		self.initializeProb()
+		self.initializeWeights()
 
 	def initializeProb(self): #creates empty 32x32 array to hold probability of 0 for each pixel
 		self.zero_prob = []
@@ -61,5 +66,32 @@ class Digits: #class containing
 				line.append(value)
 			self.one_prob.append(line)
 
+	def initializeWeights(self):
+		self.weights = []
+		x = 0
+
+		a = 0
+		while a < 32:
+			b = 0
+			row = []
+			while b < 32:
+				#x = float(decimal.Decimal(random.randrange(-99, 99))/100)
+				row.append(x)
+				b += 1
+			self.weights.append(row)
+			a += 1
+
+	def updateWeights(self, lRate, Error, num_array):
+		self.bias = self.bias + lRate*Error
+
+		a = 0
+		while a < 32:
+			b = 0
+			row = self.weights[a]
+			numRow = num_array[a]
+			while b < 32:
+				row[b] = row[b] + lRate*Error*numRow[b]
+				b += 1
+			a += 1
 
 
