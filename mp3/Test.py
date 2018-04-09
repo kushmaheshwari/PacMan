@@ -1,12 +1,11 @@
 from math import log
-from decimal import Decimal
 
-class Test:
+class Test: #class that takes in and manipulates testing file
 	def __init__(self, fname, train):
 		stringGuess = ""
-		self.num_array = None
-		self.map = None
-		self.idx = None
+		self.num_array = None #array containing digit representation of test token
+		self.map = None #array containing posterior probability of each digit class given a certain test token
+		self.idx = None #max posterior probability from self.map
 		self.fname = fname
 		self.train = train
 		self.matrix = None #holds counts of guessed vs actual class
@@ -32,6 +31,8 @@ class Test:
 				if (counter == 33): #looks at what class the image belongs (looks at digit)
 					counter = 0
 					self.calculatePosteriors(self.num_array)
+					self.updateMax(self.idx, max(self.map), self.num_array)
+					self.updateMin(self.idx, max(self.map), self.num_array)
 					self.num_array = []
 					digit = self.train.Digits[int(character)]
 					digit.totalGuesses += 1
@@ -51,12 +52,20 @@ class Test:
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
 			cc += 1
 
-		print('Below is the class accuracy.')
-		print(self.train.classAccuracy)
+		#print('Below is the class accuracy.')
+		#print(self.train.classAccuracy)
 
 		self.calcPercentages(self.matrix)
 
 		self.printRatios()
+
+		#c = 0
+		#while c < 10:
+		#	print(self.train.Digits[c].maxPost)
+		#	self.printArray(self.train.Digits[c].maxNum_array)
+		#	print(self.train.Digits[c].minPost)
+		#	self.printArray(self.train.Digits[c].minNum_array)
+		#	c += 1
 
 	def calculatePosteriors(self, num_array): #calculates posterior probabilities
 		self.map = []
@@ -120,11 +129,12 @@ class Test:
 			for index, item in enumerate(row):
 				dig = self.train.Digits[index]
 				total = dig.totalGuesses
-				line.append(item/total)
+				value = item/total
+				line.append('%.3f' % value)
 			self.percentageMatrix.append(line)
 
-		print('Below is the confusion matrix.')
-		print(self.percentageMatrix)
+		#print('Below is the confusion matrix.')
+		#print(self.percentageMatrix)
 
 
 	def printRatios(self): #print log of odd ratios and log of probabilities
@@ -146,15 +156,19 @@ class Test:
 				currRow = two[index]
 				currVal = currRow[idx]
 				val = log(col/currVal)
-				if (val > 0.5):
+				if (val > 1):
+					value = '2'
+				elif (val <= 1 and val > 0):
 					value = '+'
-				elif (val <= 0.5 and val >= -0.5):
+				elif (val <= 0 and val > -1):
 					value = '0'
-				else:
+				elif (val <= -1 and val >= -2):
 					value = '-'
+				else:
+					value = '.'
 				line.append(value)
 			self.oddsMatrix.append(line)
-		print(self.oddsMatrix)
+		self.printArray(self.oddsMatrix)
 
 
 	def singularLog(self, digit): #calculates feature likelihoods of a class
@@ -166,16 +180,37 @@ class Test:
 			line = []
 			for item in row:
 				val = log(item)
-				if (val > 0.5):
+				if (val > 0):
+					value = '2'
+				elif (val <= 0 and val > -0.5):
 					value = '+'
-				elif (val <= 0.5 and val >= -0.5):
+				elif (val <= -0.5 and val > -1):
 					value = '0'
-				else:
+				elif (val <= -1 and val >= -2.5):
 					value = '-'
+				else:
+					value = '.'
 				line.append(value)
 			singLogMatrix.append(line)
 
-		#print (singLogMatrix)
+		self.printArray(singLogMatrix)
+
+	def updateMax(self, idx, val, num_array):
+		obj = self.train.Digits[idx]
+		if ((obj.maxPost == None) or (val > obj.maxPost)):
+			obj.maxPost = val
+			obj.maxNum_array = num_array
+
+	def updateMin(self, idx, val, num_array):
+		obj = self.train.Digits[idx]
+		if ((obj.minPost == None) or (val < obj.minPost)):
+			obj.minPost = val
+			obj.minNum_array = num_array
+
+	def printArray(self, array):
+		for row in array:
+			print(*row, sep='')
+
 
 
 

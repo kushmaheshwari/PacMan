@@ -1,16 +1,20 @@
 from Train import *
 
-class Digits: #class containing 
+class Digits: #class that contains information about each digit class
 	def __init__(self):
-		self.i = 0 #x coordinate
-		self.j = 0 #y coordinate
 		self.zero_prob = None #32x32 array containing probability that each pixel is a 0 given the class
 		self.total_digits = 0 #total count of input images
 		self.correctGuesses = 0 #number of guesses about class that are correct
 		self.totalGuesses = 0 #total number of guesses (whether right or wrong)
 		self.one_prob = None #32x32 array containing probability that each pixel is a 1 given the class
+		self.maxNum_array = None #test token with highest posterior probability
+		self.maxPost = None #highest posterior probability
+		self.minNum_array = None #test token with lowest posterior probability
+		self.minPost = None #lowest posterior probability
 
 		self.initializeProb()
+		self.initializeMax()
+		self.initializeMin()
 
 	def initializeProb(self): #creates empty 32x32 array to hold probability of 0 for each pixel
 		self.zero_prob = []
@@ -61,5 +65,30 @@ class Digits: #class containing
 				line.append(value)
 			self.one_prob.append(line)
 
+	def initializeMax(self): #initializes num_array for test token with maximum posterior probability for the digit class
+		self.maxNum_array = []
+
+		a = 0
+		while a < 32:
+			b = 0
+			row = []
+			while b < 32:
+				row.append(0)
+				b += 1
+			self.maxNum_array.append(row)
+			a += 1
+
+	def initializeMin(self): #initializes num_array for test token with minimum posterior probability for the digit class
+		self.minNum_array = []
+
+		a = 0
+		while a < 32:
+			b = 0
+			row = []
+			while b < 32:
+				row.append(0)
+				b += 1
+			self.minNum_array.append(row)
+			a += 1
 
 
