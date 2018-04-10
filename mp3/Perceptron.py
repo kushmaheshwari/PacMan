@@ -1,5 +1,6 @@
 from Digits import *
 from Train import *
+from matplotlib import colors, pyplot
 
 class Perceptron:
 	def __init__(self, fname, train):
@@ -31,11 +32,11 @@ class Perceptron:
 		epoch = 0
 
 
-		while epoch < 10:
+		while epoch < 15:
 			epoch += 1
 
 			cc = 0 
-			while cc < 10:
+			while cc < 9:
 				digital = self.train.Digits[cc]
 				digital.correctGuesses = 0
 				digital.totalGuesses = 0
@@ -52,7 +53,7 @@ class Perceptron:
 						self.idx = self.predict(self.num_array)
 						digit = self.train.Digits[int(character)]
 						digit.totalGuesses += 1
-						
+
 						if (self.idx == int(character)):
 							digit.correctGuesses += 1
 						else:
@@ -69,14 +70,29 @@ class Perceptron:
 				if (counter != 0):
 					self.num_array.append(row)
 
-			totalError.append(1 - (self.sumError/2432))
-			self.lRate = self.lRate / 2
+			totalError.append((1 - (self.sumError/2432))*100)
 			print(self.lRate)
+			self.lRate = self.lRate / 2
+			
+
+		cmap2 = colors.LinearSegmentedColormap.from_list('my_colormap',
+                                           ['blue','black','red'],
+                                           256)
 
 		cc = 0 
 		while cc < 10:
 			digital = self.train.Digits[cc]
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
+
+
+			img2 = pyplot.imshow(digital.weights, interpolation='nearest',
+                    cmap = cmap2,
+                    origin='lower')
+
+			pyplot.colorbar(img2,cmap=cmap2)
+
+			pyplot.show()
+			#print(digital.weights)
 			cc += 1
 
 		print('Below is the class accuracy.')
@@ -85,7 +101,7 @@ class Perceptron:
 		print('Below is the accuracy for each epoch')
 		print(totalError)
 
-	def predict(self, num_array):
+	def predict(self, num_array): #This predicts the image number based on the weights of all the digit classes
 		guesses = []
 
 		cc = 0
@@ -99,10 +115,10 @@ class Perceptron:
 				row = num_array[a]
 				digitRow = self.train.Digits[cc].weights[a]
 				while b < 32:
-					total += row[b]*digitRow[b]
+					total += row[b]*digitRow[b] #The total will equal the bias + the weight of a pixel times the pixel (0 or 1)
 					b += 1
 				a += 1
 			guesses.append(total)
 			cc += 1
 		#print(guesses)
-		return guesses.index(max(guesses))
+		return guesses.index(max(guesses)) #Returns the max guess which correlates to most likely number

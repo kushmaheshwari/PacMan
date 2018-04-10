@@ -101,8 +101,8 @@ class Digits: #class that contains information about each digit class
 			a += 1
 	
 
-	def updateWeights(self, lRate, Error, num_array):
-		self.bias = self.bias + lRate*Error
+	def updateWeights(self, lRate, Error, num_array): # this updates the weight of the misclassified digit and the digit that it was supposed to be
+		self.bias = self.bias + lRate*Error #This updates the bias which we found leads to more accuracy
 
 		a = 0
 		while a < 32:
@@ -112,6 +112,7 @@ class Digits: #class that contains information about each digit class
 			while b < 32:
 				row[b] = row[b] + lRate*Error*numRow[b]
 				b += 1
+			a += 1
 
 	def initializeMin(self): #initializes num_array for test token with minimum posterior probability for the digit class
 		self.minNum_array = []
