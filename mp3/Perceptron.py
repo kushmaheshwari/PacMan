@@ -1,6 +1,6 @@
 from Digits import *
 from Train import *
-from matplotlib import colors, pyplot
+#from matplotlib import colors, pyplot
 
 class Perceptron:
 	def __init__(self, fname, train):
@@ -9,12 +9,16 @@ class Perceptron:
 		self.classAccuracy = None #classification accuracy probabilities
 		self.idx = None
 		self.train = train
+		self.matrix = None #holds counts of guessed vs actual class
+		self.percentageMatrix = None #holds percentages of probabilities of matrix
+		self.oddsMatrix = None #holds odd ratio matrix
 
 		self.sumError = 0
 		self.lRate = 0.5
 
 		self.fname = fname
 
+		self.initializeMatrix()
 		self.readTrainFile()
 
 
@@ -40,6 +44,7 @@ class Perceptron:
 				digital = self.train.Digits[cc]
 				digital.correctGuesses = 0
 				digital.totalGuesses = 0
+				self.initializeMatrix()
 				cc += 1
 
 			self.sumError = 0 #The total error for the current epoch
@@ -53,6 +58,7 @@ class Perceptron:
 						self.idx = self.predict(self.num_array) #Guesses the number based on the predict function
 						digit = self.train.Digits[int(character)]
 						digit.totalGuesses += 1
+						self.updateConfusion(character)
 
 						if (self.idx == int(character)): #If correct do not update weights
 							digit.correctGuesses += 1
@@ -62,7 +68,7 @@ class Perceptron:
 							self.train.Digits[self.idx].updateWeights(self.lRate, -1, self.num_array) #update the incorrect digit and make its weights weaker
 						
 						self.num_array = [] #reset the array
-						#self.updateConfusion(self.num_array, character)
+
 
 					else:
 						row.append(int(character))
@@ -75,9 +81,9 @@ class Perceptron:
 			self.lRate = self.lRate / 2 #have the learning rate every time
 			
 
-		cmap2 = colors.LinearSegmentedColormap.from_list('my_colormap', #The color map for our weight visualization
-                                           ['white','black','red'],
-                                           256)
+		#cmap2 = colors.LinearSegmentedColormap.from_list('my_colormap', #The color map for our weight visualization
+                                          # ['white','black','red'],
+                                          # 256)
 
 		cc = 0 
 		while cc < 10:
@@ -85,21 +91,23 @@ class Perceptron:
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
 
 
-			img2 = pyplot.imshow(digital.weights, interpolation='nearest', #create the plot
-                    cmap = cmap2,
-                    origin='lower')
+			#img2 = pyplot.imshow(digital.weights, interpolation='nearest', #create the plot
+             #       cmap = cmap2,
+              #      origin='lower')
 
-			pyplot.colorbar(img2,cmap=cmap2)
+			#pyplot.colorbar(img2,cmap=cmap2)
 
-			pyplot.show()
+			#pyplot.show()
 			#print(digital.weights)
 			cc += 1
 
-		print('Below is the class accuracy.')
-		print(self.train.classAccuracy)
+		#print('Below is the class accuracy.')
+		#print(self.train.classAccuracy)
 
-		print('Below is the accuracy for each epoch')
-		print(totalError)
+		#print('Below is the accuracy for each epoch')
+		#print(totalError)
+
+		self.calcPercentages(self.matrix)
 
 	def predict(self, num_array): #This predicts the image number based on the weights of all the digit classes
 		guesses = []
@@ -122,3 +130,36 @@ class Perceptron:
 			cc += 1
 		#print(guesses)
 		return guesses.index(max(guesses)) #Returns the max guess which correlates to most likely number
+
+	def initializeMatrix(self): #initalizes confusion matrix
+		self.matrix = []
+
+		a = 0
+		while a < 10:
+			row = []
+			b = 0
+			while b < 10:
+				row.append(0)
+				b += 1
+			self.matrix.append(row)
+			a += 1
+
+	def updateConfusion(self, character): #counts guessed digits given what digits it should actually be
+		colIndex = int(character)
+		rowIndex = self.idx
+		intermed = self.matrix[rowIndex]
+		intermed[colIndex] += 1
+
+	def calcPercentages(self, matrix): #takes counts of guessed digits and calculates percentage that is correct
+		self.percentageMatrix = []
+
+		for row in matrix:
+			line = []
+			counter = 0
+			for index, item in enumerate(row):
+				value = item/self.train.Digits[index].totalGuesses
+				line.append('%.3f' % value)
+			self.percentageMatrix.append(line)
+
+		print('Below is the confusion matrix.')
+		print(self.percentageMatrix)
