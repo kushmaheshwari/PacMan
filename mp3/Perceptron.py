@@ -9,11 +9,15 @@ class Perceptron:
 		self.idx = None
 		self.train = train
 
+		self.matrix = None #holds counts of guessed vs actual class
+		self.percentageMatrix = None #holds percentages of probabilities of matrix
+
 		self.sumError = 0
 		self.lRate = 0.5
 
 		self.fname = fname
 
+		self.initializeMatrix()
 		self.readTrainFile()
 
 
@@ -61,7 +65,7 @@ class Perceptron:
 							self.train.Digits[self.idx].updateWeights(self.lRate, -1, self.num_array)
 						
 						self.num_array = []
-						#self.updateConfusion(self.num_array, character)
+						self.updateConfusion(self.num_array, character)
 
 					else:
 						row.append(int(character))
@@ -79,11 +83,13 @@ class Perceptron:
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
 			cc += 1
 
-		print('Below is the class accuracy.')
-		print(self.train.classAccuracy)
+		#print('Below is the class accuracy.')
+		#print(self.train.classAccuracy)
 
-		print('Below is the accuracy for each epoch')
-		print(totalError)
+		#print('Below is the accuracy for each epoch')
+		#print(totalError)
+
+		self.calcPercentages(self.matrix)
 
 	def predict(self, num_array):
 		guesses = []
@@ -106,3 +112,38 @@ class Perceptron:
 			cc += 1
 		#print(guesses)
 		return guesses.index(max(guesses))
+
+	def initializeMatrix(self): #initalizes confusion matrix
+		self.matrix = []
+
+		a = 0
+		while a < 10:
+			row = []
+			b = 0
+			while b < 10:
+				row.append(0)
+				b += 1
+			self.matrix.append(row)
+			a += 1
+
+	def updateConfusion(self, num_array, character): #counts guessed digits given what digits it should actually be
+		colIndex = int(character)
+		rowIndex = self.idx
+		intermed = self.matrix[rowIndex]
+		intermed[colIndex] += 1
+
+	def calcPercentages(self, matrix): #takes counts of guessed digits and calculates percentage that is correct
+		self.percentageMatrix = []
+
+		for row in matrix:
+			line = []
+			counter = 0
+			for index, item in enumerate(row):
+				dig = self.train.Digits[index]
+				total = dig.totalGuesses
+				value = item/total
+				line.append('%.3f' % value)
+			self.percentageMatrix.append(line)
+
+		#print('Below is the confusion matrix.')
+		#print(self.percentageMatrix)

@@ -71,7 +71,7 @@ class Train: #class that takes in an manipulates training file
 
 if __name__ == "__main__":
 	train = Train('digitdata/digitdata/optdigits-orig_train.txt')
-	test = Test('digitdata/digitdata/optdigits-orig_test.txt', train)
-	#perceptron = Perceptron('digitdata/digitdata/optdigits-orig_train.txt', train)
+	#test = Test('digitdata/digitdata/optdigits-orig_test.txt', train)
+	perceptron = Perceptron('digitdata/digitdata/optdigits-orig_train.txt', train)
 	#print (train.num_digits)
 
