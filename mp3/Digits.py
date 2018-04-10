@@ -110,7 +110,7 @@ class Digits: #class that contains information about each digit class
 			row = self.weights[a]
 			numRow = num_array[a]
 			while b < 32:
-				row[b] = row[b] + lRate*Error*numRow[b]
+				row[b] = row[b] + lRate*Error*numRow[b] #This updates the pixel weight based on the error, learning rate, and the image pixel (0 or 1)
 				b += 1
 			a += 1
 

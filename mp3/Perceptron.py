@@ -36,13 +36,13 @@ class Perceptron:
 			epoch += 1
 
 			cc = 0 
-			while cc < 9:
+			while cc < 10:#Resets the correct guesses and total guesses at every epoch because we only want the final class accuracy
 				digital = self.train.Digits[cc]
 				digital.correctGuesses = 0
 				digital.totalGuesses = 0
 				cc += 1
 
-			self.sumError = 0
+			self.sumError = 0 #The total error for the current epoch
 			for line in content: #initializes num array
 				row = []
 
@@ -50,18 +50,18 @@ class Perceptron:
 				for character in line:
 					if (counter == 33): #looks at what class the image belongs (looks at digit)
 						counter = 0
-						self.idx = self.predict(self.num_array)
+						self.idx = self.predict(self.num_array) #Guesses the number based on the predict function
 						digit = self.train.Digits[int(character)]
 						digit.totalGuesses += 1
 
-						if (self.idx == int(character)):
+						if (self.idx == int(character)): #If correct do not update weights
 							digit.correctGuesses += 1
-						else:
+						else:#However if incorrect...
 							self.sumError += 1
-							digit.updateWeights(self.lRate, 1, self.num_array)
-							self.train.Digits[self.idx].updateWeights(self.lRate, -1, self.num_array)
+							digit.updateWeights(self.lRate, 1, self.num_array) #Update the digit it was supposed to be and make its weights stronger
+							self.train.Digits[self.idx].updateWeights(self.lRate, -1, self.num_array) #update the incorrect digit and make its weights weaker
 						
-						self.num_array = []
+						self.num_array = [] #reset the array
 						#self.updateConfusion(self.num_array, character)
 
 					else:
@@ -70,13 +70,13 @@ class Perceptron:
 				if (counter != 0):
 					self.num_array.append(row)
 
-			totalError.append((1 - (self.sumError/2432))*100)
+			totalError.append((1 - (self.sumError/2432))*100) #append the epoch accuracy
 			print(self.lRate)
-			self.lRate = self.lRate / 2
+			self.lRate = self.lRate / 2 #have the learning rate every time
 			
 
-		cmap2 = colors.LinearSegmentedColormap.from_list('my_colormap',
-                                           ['blue','black','red'],
+		cmap2 = colors.LinearSegmentedColormap.from_list('my_colormap', #The color map for our weight visualization
+                                           ['white','black','red'],
                                            256)
 
 		cc = 0 
@@ -85,7 +85,7 @@ class Perceptron:
 			self.train.classAccuracy.append(digital.correctGuesses/digital.totalGuesses)
 
 
-			img2 = pyplot.imshow(digital.weights, interpolation='nearest',
+			img2 = pyplot.imshow(digital.weights, interpolation='nearest', #create the plot
                     cmap = cmap2,
                     origin='lower')
 
