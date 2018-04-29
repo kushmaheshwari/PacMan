@@ -1,30 +1,52 @@
 import sys, pygame
-import time
+import random
+import decimal
 
 pygame.init()
 
-Gsize = Gwidth, Gheight = 600, 600
-
+Gsize = Gwidth, Gheight = 620, 600
 white = 250, 250, 250
 black = 0, 0, 0
 red = 255, 0, 0
 
 paddle_y = 240
 pos = [300, 300]
-rect = pygame.Rect(580, paddle_y, 20, 120)
+rect = pygame.Rect(600, paddle_y, 20, 120)
 velocity = [18, 6]
 screen = pygame.display.set_mode(Gsize)
 
-while 1:
+contGame = True
+
+while (contGame == True):
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
 
     pos[0] = pos[0] + velocity[0]
     pos[1] = pos[1] + velocity[1]
 
-    time.sleep(.100)
+    if pos[1] < 0:
+    	pos[1] = (-1 * pos[1])
+    	velocity[1] = -1 * velocity[1]
+    elif pos[1] > 600:
+    	pos[1] = (1200 - pos[1])
+    	velocity[1] = -1 * velocity[1]
+
+    if pos[0] < 0:
+    	pos[0] = (-1 * pos[0])
+    	velocity[0] = -1 * velocity[0]
+
+    if (pos[0] > 600) and (pos[1] > paddle_y) and (pos[1] < (paddle_y+120)):
+    	pos[0] = 1200 - pos[0]
+    	u = (decimal.Decimal(random.randrange(-9, 9)))
+    	v = (decimal.Decimal(random.randrange(-18, 18)))
+    	velocity[0] = (-1*velocity[0]) + u
+    	velocity[1] = velocity[1] + v
+    	if (velocity[0] < -18):
+    		velocity[0] = 18
+    elif (pos[0] > 600):
+    	contGame = False
 
     screen.fill(black)
-    pygame.draw.circle(screen, red, pos, 10, 0)
+    pygame.draw.circle(screen, red, pos, 25, 0)
     pygame.draw.rect(screen, white, rect, 0)
     pygame.display.flip()
