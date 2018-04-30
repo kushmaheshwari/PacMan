@@ -5,7 +5,6 @@ from QL import *
 import numpy as np
 
 
-
 Gsize = Gwidth, Gheight = 620, 600
 white = 250, 250, 250
 black = 0, 0, 0
@@ -104,3 +103,4 @@ while (contGame > 0):
 	pygame.draw.rect(screen, white, rect, 0)
 	pygame.display.flip()
 	#print (contGame)
+
