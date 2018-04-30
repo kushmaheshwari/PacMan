@@ -1,6 +1,7 @@
 import sys, pygame
 import random
 import decimal
+from Space import *
 
 pygame.init()
 
@@ -12,7 +13,7 @@ red = 255, 0, 0
 paddle_y = 240
 pos = [300, 300]
 rect = pygame.Rect(600, paddle_y, 20, 120)
-velocity = [18, 6]
+velocity = [6, 0]
 screen = pygame.display.set_mode(Gsize)
 
 contGame = True
@@ -41,10 +42,11 @@ while (contGame == True):
     	v = (decimal.Decimal(random.randrange(-18, 18)))
     	velocity[0] = (-1*velocity[0]) + u
     	velocity[1] = velocity[1] + v
-    	if (velocity[0] < -18):
-    		velocity[0] = 18
+        #velocity[0] = fixVelocity(velx)
+        #velocity[1] = fixVelocity(vely)
     elif (pos[0] > 600):
     	contGame = False
+
 
     screen.fill(black)
     pygame.draw.circle(screen, red, pos, 25, 0)
