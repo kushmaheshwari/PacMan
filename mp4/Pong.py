@@ -42,8 +42,6 @@ while (contGame == True):
     	v = (decimal.Decimal(random.randrange(-18, 18)))
     	velocity[0] = (-1*velocity[0]) + u
     	velocity[1] = velocity[1] + v
-        #velocity[0] = fixVelocity(velx)
-        #velocity[1] = fixVelocity(vely)
     elif (pos[0] > 600):
     	contGame = False
 
