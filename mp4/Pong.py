@@ -1,4 +1,5 @@
 import sys, pygame, time
+import math
 import random
 import decimal
 from QL import *
@@ -10,6 +11,9 @@ white = 250, 250, 250
 black = 0, 0, 0
 red = 255, 0, 0
 
+graph = np.zeros((500))
+idx = 0
+
 QL = QL()
 
 paddle_y = 240
@@ -20,12 +24,12 @@ velocity = [18, 6]
 #pygame.init()
 #screen = pygame.display.set_mode(Gsize)
 
-contGame = 125000
+contGame = 0
 totalBounces = 0
 bounces = 0
 reward = 0
 
-while (contGame > 0):
+while (contGame < 40000):
 	#for event in pygame.event.get():
 	#	if event.type == pygame.QUIT: sys.exit()
 
@@ -45,8 +49,10 @@ while (contGame > 0):
 	else:
 		dVel[1] = 0
 
-	dPaddle = (paddle_y + 60)//50
-	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle)
+	dPaddle = math.floor(12*paddle_y/(600-120))
+	if dPaddle == 12:
+		dPaddle = 11
+	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
 	possibleAction -= 1
 	
 	#possibleAction = random.randrange(-1,2)
@@ -75,7 +81,7 @@ while (contGame > 0):
 		bounces += 1
 		totalBounces += 1
 		pos[0] = 1199 - pos[0]
-		u = (decimal.Decimal(random.randrange(-9, 9)))
+		u = 0#(decimal.Decimal(random.randrange(-9, 9)))
 		v = (decimal.Decimal(random.randrange(-18, 18)))
 		velocity[0] = (-1*velocity[0]) + u
 		velocity[1] = velocity[1] + v
@@ -87,8 +93,10 @@ while (contGame > 0):
 		print('Bounces' + str(bounces))
 		print(contGame)
 		bounces = 0
-		contGame -= 1
-		if contGame == 10000:
+		contGame += 1
+		if contGame % 200 == 0:
+			graph[idx] = totalBounces
+			idx += 1
 			totalBounces = 0
 		#print('Failed')
 		pos[0] = 599
@@ -106,6 +114,8 @@ while (contGame > 0):
 	#pygame.draw.rect(screen, white, rect, 0)
 	#pygame.display.flip()
 	#print (contGame)
+
+np.savetxt("foo2.csv", graph, delimiter=", ")
 
 print(totalBounces/10000)
 pygame.init()
@@ -131,8 +141,10 @@ while (True):
 	else:
 		dVel[1] = 0
 
-	dPaddle = (paddle_y + 60)//50
-	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle)
+	dPaddle = math.floor(12*paddle_y/(600-120))
+	if dPaddle == 12:
+		dPaddle = 11
+	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
 	possibleAction -= 1
 	
 	#possibleAction = random.randrange(-1,2)

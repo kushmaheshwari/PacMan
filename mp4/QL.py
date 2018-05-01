@@ -3,8 +3,8 @@ import random
 
 class QL:
 	def __init__(self):
-		self.gamma = 0.5
-		self.alpha = 0
+		self.gamma = 0.7
+		self.alpha = 0.2
 		self.QMatrix = np.zeros((12, 12, 2, 3, 12, 3))
 		self.NMatrix = np.zeros((12, 12, 2, 3, 12, 3))
 		self.GameOver = 0
@@ -17,6 +17,10 @@ class QL:
 		pos[0] = pos[0] + velocity[0]
 		pos[1] = pos[1] + velocity[1]
 		newPaddle_y = paddle_y + possibleAction
+		if (newPaddle_y == 12):
+			newPaddle_y = 11
+		if (newPaddle_y == -1):
+			newPaddle_y = 0
 
 		if pos[1] < 0:
 			pos[1] = (-1 * pos[1])
@@ -44,7 +48,8 @@ class QL:
 		#print(self.QMatrix[ball_x, ball_y, velocity_x, velocity_y, paddle_y])
 		#print(ball_x, ball_y, velocity_x, velocity_y, paddle_y)
 
-		self.alpha = .6/(.6 + self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction])
+		self.alpha = 1/(1 + self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction])
+		#self.alpha = .2
 
 		if (pos[0] > 11) and (pos[1] != paddle_y):
 			#print (reward)
@@ -63,7 +68,7 @@ class QL:
 				self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] += 1
 			#print(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])
 
-	def bestAction(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y):
+	def bestAction(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y, total):
 		ball_x = int(ball_x)
 		ball_y = int(ball_y)
 		if velocity_x < 0:
@@ -71,9 +76,10 @@ class QL:
 		#print('Best')
 		#print(ball_x, ball_y, velocity_x, velocity_y, paddle_y)
 		#print (self.QMatrix[ball_x, ball_y, velocity_x, velocity_y+1, paddle_y]) 
-		randomInt = random.randrange(0, 10)
+		#randomInt = random.randrange(0, 10)
 		#print('Threshold :' + str(10000//(np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])+1)))
-		if randomInt < 100//(np.max(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])+1):
+		if (np.max(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y]) - np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])) < .1:
+		#if total < 20000: #1000 > (np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])):
 			rint = random.randrange(0, 3)
 			#print ('Random')
 			return rint
