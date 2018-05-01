@@ -16,7 +16,7 @@ gamma = 0.8
 paddle_y = 240
 pos = [300, 300]
 rect = pygame.Rect(600, paddle_y, 20, 120)
-velocity = [1, 0]
+velocity = [18, 0]
 
 pygame.init()
 screen = pygame.display.set_mode(Gsize)
@@ -47,7 +47,7 @@ while (contGame > 0):
 
 	dPaddle = (paddle_y + 60)//50
 	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle)
-	possibleAction = 0
+	possibleAction -= 1
 	
 	#possibleAction = random.randrange(-1,2)
 	#print('Best Action')
@@ -92,7 +92,7 @@ while (contGame > 0):
 		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 		paddle_y = 240
 		pos = [300, 300]
-		velocity = [1, 0]
+		velocity = [18, 0]
 	else:
 		reward = 0
 		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
