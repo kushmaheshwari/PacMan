@@ -21,7 +21,11 @@ class MultilayerNetwork:
 
 		self.fname = fname
 
+		self.accuracy = np.zeros((250))
+
 		self.readFile()
+
+		
 
 	def readFile(self):
 		with open(self.fname) as f: #read in train file
@@ -30,7 +34,8 @@ class MultilayerNetwork:
 		
 		epoch = 0
 
-		while epoch < 15:
+		while epoch < 250:
+			print(epoch)
 			epoch += 1
 			rowInput = np.zeros((100, 5))
 			rowOutput = np.zeros((100, 1))
@@ -62,21 +67,39 @@ class MultilayerNetwork:
 
 					Loss, dintFour = self.crossEntropy(intFour, rowOutput)
 
-					drow4, dweightFour, dbiasFour = self.affineBackward(dintFour, 100, 256)
+					drow4, dweightFour, dbiasFour = self.affineBackward(dintFour, self.weightFour, row4)
+					dintThree = self.reluBackward(drow4, row4)
+					drow3, dweightThree, dbiasThree = self.affineBackward(dintThree, self.weightThree, row3)
+					dintTwo = self.reluBackward(drow3, row3)
+					drow2, dweightTwo, dbiasTwo = self.affineBackward(dintTwo, self.weightTwo, row2)
+					dintOne = self.reluBackward(drow2, row2)
+					drow1, dweightOne, dbiasOne = self.affineBackward(dintOne, self.weightOne, row1)
 
+					self.weightOne -= self.lRate*dweightOne
+					self.weightTwo -= self.lRate*dweightTwo
+					self.weightThree -= self.lRate*dweightThree
+					self.weightFour -= self.lRate*dweightFour
 
+					self.biasOne -= self.lRate*dbiasOne
+					self.biasTwo -= self.lRate*dbiasTwo
+					self.biasThree -= self.lRate*dbiasThree
+					self.biasFour -= self.lRate*dbiasFour
+
+					self.accuracy[epoch] = Loss
 
 					rowInput = np.zeros((100, 5))
 					rowOutput = np.zeros((100, 1))
 					counter = 0
 				counter += 1
 
+		np.savetxt("foo5.csv", self.accuracy, delimiter=", ")
+
 	def affineForward(self, row, weight, bias):
 		inter = np.dot(row, weight)
 		return (inter + bias)
 
 	def reluForward(self, inter):
-		return inter.clip(0, 100)
+		return inter.clip(0, 100000000)
 
 	def crossEntropy(self, intFour, rowOutput):
 		n = 0
@@ -106,20 +129,29 @@ class MultilayerNetwork:
 
 		return totalLoss, totalGrad
 
-	def affineBackward(self, F, i, j):
-		n = 0
-		sum = 0
-		drow4 = np.zeros((i, j))
-		while n < 3:
-			print(F.shape)
-			print(self.weightFour.shape)
-			drow4 += np.dot(F[n], self.weightFour[n])
-			n += 1
+	def affineBackward(self, F, weight, row): #100, 256, 3
+		drow = np.dot(F, weight.transpose())
+		dweight = np.dot(row.transpose(), F)
+		dbias = weight.sum(axis = 0)
+		
+		return drow, dweight, dbias
 
-		print(drow4)
-		dweightFour = np.zeros
+	def reluBackward(self, inter, row):
 		n = 0
-		while n < self.batchSize:
+		while n < len(row):
+			x = 0
+			while x < len(row[n]):
+				if row[n][x] == 0:
+					inter[n][x] = 0
+				x += 1
+			n += 1
+		return inter
+
+
+
+
+
+
 
 
 
