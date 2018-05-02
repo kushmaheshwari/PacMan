@@ -89,8 +89,8 @@ class QL:
 		#print('Threshold :' + str(10000//(np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])+1)))
 		
 		#decides random value to determine exploration vs exploitation
-		if (np.max(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y]) - np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])) < .1:
-		#if total < 20000: #1000 > (np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])):
+		#if (np.max(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y]) - np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])) < .1:
+		if total < 20000: #1000 > (np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])):
 			rint = random.randrange(0, 3)
 			#print ('Random')
 			return rint

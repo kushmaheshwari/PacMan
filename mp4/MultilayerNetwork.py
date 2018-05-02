@@ -3,7 +3,7 @@ import math
 
 class MultilayerNetwork:
 	def __init__(self, fname):
-		self.scalar = .25
+		self.scalar = .00001
 		self.weightOne = np.random.randn(5, 256) * self.scalar
 		self.weightTwo = np.random.randn(256, 256) * self.scalar
 		self.weightThree = np.random.randn(256, 256) * self.scalar
@@ -34,7 +34,7 @@ class MultilayerNetwork:
 		
 		epoch = 0
 
-		while epoch < 250:
+		while epoch < 50:
 			print(epoch)
 			epoch += 1
 			rowInput = np.zeros((100, 5))
@@ -91,7 +91,6 @@ class MultilayerNetwork:
 					rowOutput = np.zeros((100, 1))
 					counter = 0
 				counter += 1
-
 		np.savetxt("foo5.csv", self.accuracy, delimiter=", ")
 
 	def affineForward(self, row, weight, bias):
@@ -115,7 +114,6 @@ class MultilayerNetwork:
 				x += 1
 			totalLoss += intFour[n][idx] - math.log(sumF)
 
-
 			x = 0
 			while x < 3:
 				if x == idx:
@@ -125,7 +123,7 @@ class MultilayerNetwork:
 				x += 1
 			
 			n += 1
-		totalLoss = totalLoss/self.batchSize
+		totalLoss = -totalLoss/self.batchSize
 
 		return totalLoss, totalGrad
 

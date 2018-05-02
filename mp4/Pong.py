@@ -12,11 +12,11 @@ white = 250, 250, 250
 black = 0, 0, 0
 red = 255, 0, 0
 
-graph = np.zeros((500))
+graph = np.zeros((501))
 idx = 0
 
-#QL = QL()
-SARSA = SARSA()
+QL = QL()
+#SARSA = SARSA()
 
 paddle_y = 240
 #inititalize ball_x and ball_y
@@ -36,7 +36,7 @@ bounces = 0
 #total reward
 reward = 0
 
-while (contGame < 40000):
+while (contGame < 100200):
 	#for event in pygame.event.get():
 	#	if event.type == pygame.QUIT: sys.exit()
 
@@ -64,7 +64,7 @@ while (contGame < 40000):
 		dPaddle = 11
 
 	#select action to take
-	possibleAction = SARSA.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
+	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
 	possibleAction -= 1
 	
 	#possibleAction = random.randrange(-1,2)
@@ -106,10 +106,9 @@ while (contGame < 40000):
 		if (velocity[0] > -18):
 			velocity[0] = -18
 		#q-learning/sarsa - update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 	#whn ball passes the paddle
 	elif (pos[0] >= 600):
-		reward = -1
 		print('Bounces' + str(bounces))
 		print(contGame)
 		bounces = 0
@@ -121,7 +120,7 @@ while (contGame < 40000):
 		#print('Failed')
 		pos[0] = 599
 		#q-learning/sarsa - update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 		#re-initalize game
 		paddle_y = 240
 		pos = [300, 300]
@@ -129,7 +128,7 @@ while (contGame < 40000):
 	else:
 		reward = 0
 		#q-learning/sarsa - update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 
 	#screen.fill(black)
 	#pygame.draw.circle(screen, red, pos, 25, 0)
@@ -138,7 +137,7 @@ while (contGame < 40000):
 	#pygame.display.flip()
 	#print (contGame)
 
-#np.savetxt("foo2.csv", graph, delimiter=", ")
+#np.savetxt("foo3.csv", graph, delimiter=", ")
 
 #run after 100,000 training trials
 print(totalBounces/10000)
@@ -173,7 +172,7 @@ while (True):
 		dPaddle = 11
 
 	#select action
-	possibleAction = SARSA.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
+	possibleAction = QL.bestAction(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, contGame)
 	possibleAction -= 1
 	
 	#possibleAction = random.randrange(-1,2)
@@ -213,7 +212,7 @@ while (True):
 		if (velocity[0] > -18):
 			velocity[0] = -18
 		#update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 	
 	#when ball goes past the paddle
 	elif (pos[0] >= 600):
@@ -225,15 +224,14 @@ while (True):
 		#print('Failed')
 		pos[0] = 599
 		#update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 		paddle_y = 240
 		pos = [300, 300]
 		velocity = [18, 6]
 	else:
 		reward = 0
 		#update rewards
-		SARSA.updateSARSAMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward, contGame)
-
+		QL.updateQMatrix(pos[0]//50, pos[1]//50, dVel[0], dVel[1], dPaddle, possibleAction, reward)
 	#specs for game 
 	screen.fill(black)
 	pygame.draw.circle(screen, red, pos, 25, 0)
