@@ -1,15 +1,16 @@
 import numpy as np
 import random
 
-class QL:
+class SARSA:
 	def __init__(self):
-		self.gamma = 0.7
-		self.alpha = 0.2
-		self.QMatrix = np.zeros((12, 12, 2, 3, 12, 3))
+		self.gamma = 0.77
+		self.alpha = 0
+		self.SARSAMatrix = np.zeros((12, 12, 2, 3, 12, 3))
 		self.NMatrix = np.zeros((12, 12, 2, 3, 12, 3))
+		self.epsilon = 0
 		self.GameOver = 0
 
-	def updateQMatrix(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y, possibleAction, reward):
+	def updateSARSAMatrix(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y, possibleAction, reward, count):
 		#discretize ball position
 		ball_x = int(ball_x)
 		ball_y = int(ball_y)
@@ -47,6 +48,8 @@ class QL:
 			velocity[0] = 0
 		
 		possibleAction += 1
+
+		nextAction = self.bestAction(pos[0], pos[1], velocity[0], velocity[1], newPaddle_y, count)
 		#print('Print Values of Actions at current State')
 		#print(ball_x, ball_y, pos[0], pos[1], velocity_x, velocity_y, velocity[0], velocity[1], paddle_y, possibleAction)
 		#print(self.QMatrix[ball_x, ball_y, velocity_x, velocity_y, paddle_y])
@@ -54,30 +57,29 @@ class QL:
 
 		#calculate alpha value
 		self.alpha = 1/(1 + self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction])
-		#self.alpha = .2
 
 		#check if ball is by paddle
 		if (pos[0] > 11) and (pos[1] != paddle_y):
 			#print (reward)
 			#calculate Q(s, a)
-			change = self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] 
+			change = self.SARSAMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] 
 			new = change + self.alpha*(reward - self.gamma - change)
-			self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] = new
+			self.SARSAMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] = new
 			if new != 0:
 				self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] += 1
 		
 		elif(pos[0] < 12):
 
-			change = self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction]
-			#Q(s, a) <-- Q(s, a) + alpha(r(s) + gamma*max(Q(s,a)) - Q(s,a)) 
-			new = change + self.alpha*(reward + self.gamma*max(self.QMatrix[pos[0]][pos[1]][velocity[0]][velocity[1]+1][newPaddle_y]) - change)
-			self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] = new
+			change = self.SARSAMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] 
+			#Q(s, a) <-- Q(s, a) + alpha(r(s) + gamma*(Q(s2,a2)) - Q(s,a)) 
+			new = change + self.alpha*(reward + self.gamma*self.SARSAMatrix[pos[0]][pos[1]][velocity[0]][velocity[1]+1][newPaddle_y][nextAction] - change)
+			self.SARSAMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] = new
 			if new != 0:
 				self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y][possibleAction] += 1
 			#print(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])
 
 	#selects action to take
-	def bestAction(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y, total):
+	def bestAction(self, ball_x, ball_y, velocity_x, velocity_y, paddle_y, count):
 		ball_x = int(ball_x)
 		ball_y = int(ball_y)
 		if velocity_x < 0:
@@ -89,7 +91,7 @@ class QL:
 		#print('Threshold :' + str(10000//(np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])+1)))
 		
 		#decides random value to determine exploration vs exploitation
-		if (np.max(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y]) - np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])) < .1:
+		if (np.max(self.NMatrix[ball_x-1][ball_y][velocity_x][velocity_y+1][paddle_y]) - np.min(self.NMatrix[ball_x-1][ball_y][velocity_x][velocity_y+1][paddle_y])) < .1:
 		#if total < 20000: #1000 > (np.min(self.NMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])):
 			rint = random.randrange(0, 3)
 			#print ('Random')
@@ -99,5 +101,5 @@ class QL:
 		else:
 			#print('Argmax')
 			#print(self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y])
-			return np.argmax(self.QMatrix[ball_x][ball_y][velocity_x][velocity_y+1][paddle_y]) 
+			return np.argmax(self.SARSAMatrix[ball_x-1][ball_y][velocity_x][velocity_y+1][paddle_y]) 
 
