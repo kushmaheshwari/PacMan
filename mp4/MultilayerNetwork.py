@@ -21,7 +21,9 @@ class MultilayerNetwork:
 
 		self.fname = fname
 
-		self.accuracy = np.zeros((250))
+		self.losses = np.zeros((100))
+		self.accuracy = np.zeros((250, 2))
+		self.realAccuracy = np.zeros((100))
 
 		self.readFile()
 
@@ -34,19 +36,23 @@ class MultilayerNetwork:
 		
 		epoch = 0
 
-		while epoch < 50:
+		while epoch < 10:
+
 			print(epoch)
 			epoch += 1
 			rowInput = np.zeros((100, 5))
 			rowOutput = np.zeros((100, 1))
 			counter = 0
 	
+			i = 0
 			for line in content: #initializes num array
 				data = line.split()
 				dataInput = data[:-1]
 				dataOutput = data[5:]
 				rowInput[counter]= dataInput
 				rowOutput[counter] = dataOutput
+
+				acc = 0
 				
 				if counter == self.batchSize - 1:
 					n = 0
@@ -65,7 +71,17 @@ class MultilayerNetwork:
 					row4 = self.reluForward(intThree)
 					intFour = self.affineForward(row4, self.weightFour, self.biasFour)
 
+					x = 0
+					
+					while x < self.batchSize:
+						if np.argmax(intFour[x]) == rowOutput[x]:
+							acc += 1
+						x += 1
+
+					#print(acc/100)
 					Loss, dintFour = self.crossEntropy(intFour, rowOutput)
+
+
 
 					drow4, dweightFour, dbiasFour = self.affineBackward(dintFour, self.weightFour, row4)
 					dintThree = self.reluBackward(drow4, row4)
@@ -85,12 +101,17 @@ class MultilayerNetwork:
 					self.biasThree -= self.lRate*dbiasThree
 					self.biasFour -= self.lRate*dbiasFour
 
-					self.accuracy[epoch] = Loss
-
 					rowInput = np.zeros((100, 5))
 					rowOutput = np.zeros((100, 1))
 					counter = 0
+
+					self.realAccuracy[i] = acc/100
+					self.losses[i] = Loss
 				counter += 1
+				
+			self.accuracy[epoch][0] = np.mean(self.losses)
+			self.accuracy[epoch][1] = np.mean(self.realAccuracy)
+
 		np.savetxt("foo5.csv", self.accuracy, delimiter=", ")
 
 	def affineForward(self, row, weight, bias):
@@ -131,7 +152,7 @@ class MultilayerNetwork:
 		drow = np.dot(F, weight.transpose())
 		dweight = np.dot(row.transpose(), F)
 		dbias = weight.sum(axis = 0)
-		
+
 		return drow, dweight, dbias
 
 	def reluBackward(self, inter, row):
@@ -144,14 +165,6 @@ class MultilayerNetwork:
 				x += 1
 			n += 1
 		return inter
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
 	MultilayerNetwork = MultilayerNetwork('ExpertPolicy.txt')
