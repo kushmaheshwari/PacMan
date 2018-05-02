@@ -37,39 +37,30 @@ class MultilayerNetwork:
 		content = [x.strip() for x in content]
 		row = np.zeros((10, 8))
 		weight = np.zeros((8, 4))
-		bias = np.zeros((1, 4))
-		dZ = np.zeros((10, 4))
+		y = np.zeros((10))
+		F = np.zeros((10, 3))
 		counter = 0
-		x = 0
+		x = 1
 		for line in content: #initializes num array	
 			data = line.split()
 			#print(counter)
 			#print(data)
-			if (x > 0) and (x < 11):
-				row[counter] = data
+			if (x > 1) and (x < 12):
+				F[counter] = data
 				counter += 1
-			if x == 13 or x == 23 or x == 36:
+			if x == 13:
 				counter = 0
-			if x > 12 and x < 21:
-				weight[counter] = data
+			if (x == 14):
+				y = data
 				counter += 1
-			if x == 23:
-				bias[0] = data
-			if x == 25:
-				intOne = self.affineForward(row, weight, bias)
-				print('intOne')
-				print(intOne)
-			if x > 37 and x < 48:
-				dZ[counter] = data
-				counter += 1
-			if x == 50:
-				dA, dW, db = self.affineBackward(dZ, weight, row)
-				print('dA')
-				print(dA)
-				print('dW')
-				print(dW)
-				print('dB')
-				print(db)
+
+			if x == 15:
+				print(y)
+				Loss, dintFour = self.crossEntropy(F, y)
+				print('Loss')
+				print(Loss)
+				print('dintFour')
+				print(dintFour)
 			x += 1
 
 			
@@ -151,7 +142,7 @@ class MultilayerNetwork:
 					rowOutput = np.zeros((100, 1))
 					counter = 0
 
-					self.realAccuracy[i] = acc/100
+					self.realAccuracy[i] = acc/self.batchSize
 					self.losses[i] = Loss
 				counter += 1
 				
@@ -161,9 +152,9 @@ class MultilayerNetwork:
 		np.savetxt("foo5.csv", self.accuracy, delimiter=", ")
 
 	def affineForward(self, row, weight, bias):
-		print (row)
-		print (weight)
-		print (bias)
+		#print (row)
+		#print (weight)
+		#print (bias)
 		inter = np.dot(row, weight)
 		return (inter + bias)
 
@@ -174,7 +165,7 @@ class MultilayerNetwork:
 		n = 0
 		totalLoss = 0
 		totalGrad = np.zeros((100, 3))
-		while n < self.batchSize:
+		while n < len(rowOutput):
 			idx = int(rowOutput[n])
 			x = 0
 			sumF = 0
@@ -187,13 +178,13 @@ class MultilayerNetwork:
 			x = 0
 			while x < 3:
 				if x == idx:
-					totalGrad[n][x] = -(1 - math.exp(intFour[n][x])/sumF)/self.batchSize
+					totalGrad[n][x] = -(1 - math.exp(intFour[n][x])/sumF)/len(rowOutput)
 				else:
-					totalGrad[n][x] = -(0 - math.exp(intFour[n][x])/sumF)/self.batchSize
+					totalGrad[n][x] = -(0 - math.exp(intFour[n][x])/sumF)/len(rowOutput)
 				x += 1
 			
 			n += 1
-		totalLoss = -totalLoss/self.batchSize
+		totalLoss = -totalLoss/len(rowOutput)
 
 		return totalLoss, totalGrad
 
@@ -216,4 +207,4 @@ class MultilayerNetwork:
 		return inter
 
 if __name__ == "__main__":
-	MultilayerNetwork = MultilayerNetwork('ExpertPolicy.txt', 'affine.txt')
+	MultilayerNetwork = MultilayerNetwork('ExpertPolicy.txt', 'loss.txt')
