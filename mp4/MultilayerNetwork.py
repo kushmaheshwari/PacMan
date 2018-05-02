@@ -27,7 +27,7 @@ class MultilayerNetwork:
 		self.accuracy = np.zeros((250, 2))
 		self.realAccuracy = np.zeros((10))
 
-		self.testFile()
+		#self.testFile()
 
 		self.readFile()
 
@@ -37,25 +37,39 @@ class MultilayerNetwork:
 		content = [x.strip() for x in content]
 		row = np.zeros((10, 8))
 		weight = np.zeros((8, 4))
-		bias = np.zeros((4))
+		bias = np.zeros((1, 4))
+		dZ = np.zeros((10, 4))
 		counter = 0
 		x = 0
 		for line in content: #initializes num array	
 			data = line.split()
-			print(data)
+			#print(counter)
+			#print(data)
 			if (x > 0) and (x < 11):
 				row[counter] = data
 				counter += 1
-			if x == 13 or x == 23:
+			if x == 13 or x == 23 or x == 36:
 				counter = 0
 			if x > 12 and x < 21:
 				weight[counter] = data
 				counter += 1
 			if x == 23:
-				bias = data
+				bias[0] = data
 			if x == 25:
 				intOne = self.affineForward(row, weight, bias)
+				print('intOne')
 				print(intOne)
+			if x > 37 and x < 48:
+				dZ[counter] = data
+				counter += 1
+			if x == 50:
+				dA, dW, db = self.affineBackward(dZ, weight, row)
+				print('dA')
+				print(dA)
+				print('dW')
+				print(dW)
+				print('dB')
+				print(db)
 			x += 1
 
 			
@@ -149,7 +163,7 @@ class MultilayerNetwork:
 	def affineForward(self, row, weight, bias):
 		print (row)
 		print (weight)
-		print ()
+		print (bias)
 		inter = np.dot(row, weight)
 		return (inter + bias)
 
@@ -186,7 +200,7 @@ class MultilayerNetwork:
 	def affineBackward(self, F, weight, row): #100, 256, 3
 		drow = np.dot(F, weight.transpose())
 		dweight = np.dot(row.transpose(), F)
-		dbias = weight.sum(axis = 0)
+		dbias = F.sum(axis = 0)
 
 		return drow, dweight, dbias
 
