@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 class MultilayerNetwork:
-	def __init__(self, fname):
+	def __init__(self, fname, testfile):
 		self.scalar = .00001
 		self.weightOne = np.random.randn(5, 256) * self.scalar
 		self.weightTwo = np.random.randn(256, 256) * self.scalar
@@ -21,13 +21,47 @@ class MultilayerNetwork:
 
 		self.fname = fname
 
-		self.losses = np.zeros((100))
+		self.testfile = testfile
+
+		self.losses = np.zeros((10))
 		self.accuracy = np.zeros((250, 2))
-		self.realAccuracy = np.zeros((100))
+		self.realAccuracy = np.zeros((10))
+
+		self.testFile()
 
 		self.readFile()
 
-		
+	def testFile(self):
+		with open(self.testfile) as f: #read in train file
+		    	content = f.readlines()
+		content = [x.strip() for x in content]
+		row = np.zeros((10, 8))
+		weight = np.zeros((8, 4))
+		bias = np.zeros((4))
+		counter = 0
+		x = 0
+		for line in content: #initializes num array	
+			data = line.split()
+			print(data)
+			if (x > 0) and (x < 11):
+				row[counter] = data
+				counter += 1
+			if x == 13 or x == 23:
+				counter = 0
+			if x > 12 and x < 21:
+				weight[counter] = data
+				counter += 1
+			if x == 23:
+				bias = data
+			if x == 25:
+				intOne = self.affineForward(row, weight, bias)
+				print(intOne)
+			x += 1
+
+			
+
+
+
 
 	def readFile(self):
 		with open(self.fname) as f: #read in train file
@@ -81,8 +115,6 @@ class MultilayerNetwork:
 					#print(acc/100)
 					Loss, dintFour = self.crossEntropy(intFour, rowOutput)
 
-
-
 					drow4, dweightFour, dbiasFour = self.affineBackward(dintFour, self.weightFour, row4)
 					dintThree = self.reluBackward(drow4, row4)
 					drow3, dweightThree, dbiasThree = self.affineBackward(dintThree, self.weightThree, row3)
@@ -115,6 +147,9 @@ class MultilayerNetwork:
 		np.savetxt("foo5.csv", self.accuracy, delimiter=", ")
 
 	def affineForward(self, row, weight, bias):
+		print (row)
+		print (weight)
+		print ()
 		inter = np.dot(row, weight)
 		return (inter + bias)
 
@@ -167,4 +202,4 @@ class MultilayerNetwork:
 		return inter
 
 if __name__ == "__main__":
-	MultilayerNetwork = MultilayerNetwork('ExpertPolicy.txt')
+	MultilayerNetwork = MultilayerNetwork('ExpertPolicy.txt', 'affine.txt')
